@@ -1,7 +1,16 @@
+using ScreenScene.Business;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
+
+var connectionString = builder.Configuration.GetConnectionString("ScreenSceneDBConnection");
+
+connectionString = $"{connectionString}User ID={builder.Configuration["User:Id"]};Password={builder.Configuration["User:Password"]};";
+
+Configuration.Configure(builder.Services, connectionString);
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen( c =>
 {

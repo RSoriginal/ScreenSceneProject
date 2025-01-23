@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ScreenScene.Data.Entities;
@@ -13,6 +14,7 @@ public class Ticket : BaseEntity
     public int SeatNumber { get; set; }
     
     [Required]
+    [Precision(18, 2)]
     public decimal Price { get; set; }
     
     [Required]
