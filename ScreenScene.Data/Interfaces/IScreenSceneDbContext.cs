@@ -10,6 +10,8 @@ public interface IScreenSceneDbContext
     public DbSet<ActorMovie> ActorMovies { get; set; }
     public DbSet<Genre> Genres { get; set; }
     public DbSet<GenreMovie> GenreMovies { get; set; }
+    public DbSet<Comment> Comments { get; set; }
+    public DbSet<Grade> Grades { get; set; }
     public DbSet<Hall> Halls { get; set; }
     public DbSet<Proposition> Propositions { get; set; }
     public DbSet<Seance> Seances { get; set; }
