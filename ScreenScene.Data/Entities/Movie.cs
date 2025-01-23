@@ -21,8 +21,6 @@ public class Movie : BaseEntity
     [Required]
     public DateTime Duration { get; set; }
     
-    // public double Rating { get; set; }
-    
     [Required]
     public DateTime ReleaseDate { get; set; }
     
@@ -33,4 +31,8 @@ public class Movie : BaseEntity
     public IEnumerable<Seance> Seances { get; set; } = [];
     
     public IEnumerable<Proposition> Propositions { get; set; } = [];
+    
+    public IEnumerable<Grade> Grades { get; set; } = [];
+    
+    public IEnumerable<Comment> Comments { get; set; } = [];
 }

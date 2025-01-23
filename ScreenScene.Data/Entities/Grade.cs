@@ -1,21 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ScreenScene.Data.Entities.Auth;
 
 namespace ScreenScene.Data.Entities;
 
-[Table("Seances")]
-public class Seance : BaseEntity
+[Table("Grades")]
+public class Grade : BaseEntity
 {
     [Required]
-    public DateTime AssignedAt { get; set; }
-
-    [Required]
     public int MovieId { get; set; }
+    
     public Movie Movie { get; set; }
     
     [Required]
-    public int HallId { get; set; }
-    public Hall Hall { get; set; }
-
-    public IEnumerable<Ticket> Tickets { get; set; } = [];
+    public int Mark { get; set; }
+    
+    [Required]
+    public string UserId { get; set; }
+    
+    public ApplicationUser User { get; set; }
 }

@@ -16,6 +16,8 @@ public class Proposition : BaseEntity
     [Required]
     public int MovieId { get; set; }
     
+    public Movie Movie { get; set; } = null!;
+    
     [Required]
-    public int CinemaUserId { get; set; }
+    public string UserId { get; set; }
 }

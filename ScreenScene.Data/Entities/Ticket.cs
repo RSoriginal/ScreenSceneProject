@@ -16,5 +16,9 @@ public class Ticket : BaseEntity
     public decimal Price { get; set; }
     
     [Required]
-    public int UserId { get; set; }
+    public string UserId { get; set; }
+    
+    [Required]
+    public int SeanceId { get; set; }
+    public Seance Seance { get; set; }
 }
