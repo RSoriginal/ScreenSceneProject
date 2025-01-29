@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using ScreenScene.Data.Entities;
 using ScreenScene.Data.Entities.Auth;
 using ScreenScene.Data.Interfaces;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ScreenScene.Data.Context;
 
@@ -26,7 +28,12 @@ public class ScreenSceneContext : IdentityDbContext<ApplicationUser>, IScreenSce
     {
         return await base.SaveChangesAsync(cancellationToken);
     }
-    
+
+    public override DbSet<TEntity> Set<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors | DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.NonPublicFields | DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties | DynamicallyAccessedMemberTypes.Interfaces)] TEntity>()
+    {
+        return base.Set<TEntity>();
+    }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<ActorMovie>()
@@ -36,5 +43,10 @@ public class ScreenSceneContext : IdentityDbContext<ApplicationUser>, IScreenSce
             .HasKey(gm => new { gm.GenreId, gm.MovieId });
 
         base.OnModelCreating(builder);
+    }
+
+    public override EntityEntry<TEntity> Entry<TEntity>(TEntity entity)
+    {
+        return base.Entry(entity);
     }
 }

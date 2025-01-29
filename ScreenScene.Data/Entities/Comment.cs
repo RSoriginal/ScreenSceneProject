@@ -9,14 +9,14 @@ public class Comment : BaseEntity
 {
     [Required] 
     [StringLength(1000)]
-    public string Content { get; set; }
+    public string Content { get; set; } = null!;
 
     [Required]
     public DateTime CreatedDateTime { get; set; }
     
     [Required]
-    public string UserId { get; set; }
-    
+    public string UserId { get; set; } = null!;
+
     public ApplicationUser? User { get; set; }
     
     [Required]

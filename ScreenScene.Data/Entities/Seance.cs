@@ -11,11 +11,11 @@ public class Seance : BaseEntity
 
     [Required]
     public int MovieId { get; set; }
-    public Movie Movie { get; set; }
+    public Movie? Movie { get; set; }
     
     [Required]
     public int HallId { get; set; }
-    public Hall Hall { get; set; }
+    public Hall? Hall { get; set; }
 
     public IEnumerable<Ticket> Tickets { get; set; } = [];
 }

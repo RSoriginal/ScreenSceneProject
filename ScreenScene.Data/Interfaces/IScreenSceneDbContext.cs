@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using ScreenScene.Data.Entities;
 
 namespace ScreenScene.Data.Interfaces;
 
-public interface IScreenSceneDbContext
+public interface IScreenSceneDbContext : IDisposable
 {
     public DbSet<Movie> Movies { get; set; }
     public DbSet<Actor> Actors { get; set; }
@@ -17,4 +18,6 @@ public interface IScreenSceneDbContext
     public DbSet<Seance> Seances { get; set; }
     public DbSet<Ticket> Tickets { get; set; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+    DbSet<TEntity> Set<TEntity>() where TEntity : class;
+    EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
 }
