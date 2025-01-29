@@ -20,7 +20,7 @@ namespace ScreenScene.Data
                 .AddEntityFrameworkStores<ScreenSceneContext>()
                 .AddDefaultTokenProviders();
 
-            serviceCollection.AddTransient<IScreenSceneDbContext>(provider => provider.GetService<ScreenSceneContext>()!);
+            serviceCollection.AddScoped<IScreenSceneDbContext, ScreenSceneContext>();
         }
     }
 }
