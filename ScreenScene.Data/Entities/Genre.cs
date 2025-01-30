@@ -10,7 +10,7 @@ public class Genre : BaseEntity
 {
     [Required]
     [StringLength(55)]
-    public string Name { get; private set; } = null!;
+    public string Name { get; set; } = null!;
 
     public IEnumerable<GenreMovie> GenreMovies { get; set; } = [];
 }
