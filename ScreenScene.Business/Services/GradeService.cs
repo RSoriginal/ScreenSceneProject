@@ -3,7 +3,7 @@ using ScreenScene.Business.Interfaces;
 
 namespace ScreenScene.Business.Services;
 
-public class GradeService : IService<GradeRequest, GradeResponse>
+public class GradeService : IGradeService
 {
     public Task<IEnumerable<GradeResponse>> GetAll()
     {

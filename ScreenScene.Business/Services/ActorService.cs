@@ -1,37 +1,58 @@
+using AutoMapper;
 using ScreenScene.Business.DTOs.Actor;
 using ScreenScene.Business.Interfaces;
+using ScreenScene.Data.Entities;
+using ScreenScene.Data.Interfaces;
 
 namespace ScreenScene.Business.Services;
 
-public class ActorService : IService<ActorRequest, ActorResponse>
+public class ActorService : IActorService
 {
-    public Task<IEnumerable<ActorResponse>> GetAll()
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public ActorService(IMapper mapper, IUnitOfWork unitOfWork)
     {
-        throw new NotImplementedException();
+        _mapper = mapper;
+        _unitOfWork = unitOfWork;
     }
 
-    public Task<ActorResponse?> GetById(object id)
+    public async Task CreateAsync(ActorCreateRequest actorRequest)
     {
-        throw new NotImplementedException();
+        var actor = _mapper.Map<Actor>(actorRequest);
+
+        await _unitOfWork.Actors.CreateAsync(actor);
+
+        await _unitOfWork.SaveChangesAsync();
     }
 
-    public Task Create(ActorRequest entity)
+    public async Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        await _unitOfWork.Actors.DeleteAsync(id);
+
+        await _unitOfWork.SaveChangesAsync();
     }
 
-    public void Update(ActorRequest entity)
+    public async Task<IEnumerable<ActorResponse>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var actors = await _unitOfWork.Actors.GetAllAsync();
+
+        return _mapper.Map<IEnumerable<ActorResponse>>(actors);
     }
 
-    public void Delete(ActorRequest entity)
+    public async Task<ActorResponse?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var actor = await _unitOfWork.Actors.GetByIdAsync(id);
+
+        return _mapper.Map<ActorResponse>(actor);
     }
 
-    public Task Delete(object id)
+    public async Task UpdateAsync(ActorUpdateRequest actorRequest)
     {
-        throw new NotImplementedException();
+        var actor = _mapper.Map<Actor>(actorRequest);
+
+        _unitOfWork.Actors.Update(actor);
+
+        await _unitOfWork.SaveChangesAsync();
     }
 }

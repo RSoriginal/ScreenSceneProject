@@ -8,34 +8,50 @@ namespace ScreenSceneProject.Controllers;
 [Route("api/actors")]
 public class ActorController : ControllerBase
 {
-    private readonly IActorService<ActorRequest, ActorResponse> _actorService;
-    
-    public ActorController(IActorService<ActorRequest, ActorResponse> actorService)
+    private readonly ILogger<ActorController> _logger;
+    private readonly IActorService _actorService;
+
+    public ActorController(ILogger<ActorController> logger, IActorService actorService)
     {
+        _logger = logger;
         _actorService = actorService;
     }
-    
-    // POST: ~/api/actors
+
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] ActorRequest actorRequest) // get parameter from body (JSON)
+    public async Task<IActionResult> CreateAsync([FromBody] ActorCreateRequest actorRequest)
     {
-        await _actorService.Create(actorRequest);
-        return Ok();
-    }
-    
-    // PUT: ~/api/actors
-    [HttpPut]
-    public  async Task<IActionResult> Edit([FromBody] ActorRequest actorRequest)
-    {
-        await _actorService.Update(actorRequest);
+        await _actorService.CreateAsync(actorRequest);
+
         return Ok();
     }
 
-    // DELETE: ~/api/actors
     [HttpDelete("{id}")]
-    public IActionResult Delete([FromRoute] int id)
+    public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
-        phoneService.Delete(id);
+        await _actorService.DeleteAsync(id);
+
+        return Ok();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllAsync()
+    {
+        return Ok(await _actorService.GetAllAsync());
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetByIdAsync(int id)
+    {
+        return Ok(await _actorService.GetByIdAsync(id));
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateAsync(int id, [FromBody] ActorUpdateRequest actorRequest)
+    {
+        actorRequest.Id = id;
+
+        await _actorService.UpdateAsync(actorRequest);
+
         return Ok();
     }
 }

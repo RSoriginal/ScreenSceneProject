@@ -3,7 +3,7 @@ using ScreenScene.Business.Interfaces;
 
 namespace ScreenScene.Business.Services;
 
-public class SeanceService : IService<SeanceRequest, SeanceResponse>
+public class SeanceService : ISeanceService
 {
     public Task<IEnumerable<SeanceResponse>> GetAll()
     {

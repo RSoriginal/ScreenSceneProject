@@ -3,7 +3,7 @@ using ScreenScene.Business.Interfaces;
 
 namespace ScreenScene.Business.Services;
 
-public class CommentService : IService<CommentRequest, CommentResponse>
+public class CommentService : ICommentService
 {
     public Task<IEnumerable<CommentResponse>> GetAll()
     {

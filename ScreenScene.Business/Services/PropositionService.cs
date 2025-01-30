@@ -3,7 +3,7 @@ using ScreenScene.Business.Interfaces;
 
 namespace ScreenScene.Business.Services;
 
-public class PropositionService : IService<PropositionRequest, PropositionResponse>
+public class PropositionService : IPropositionService
 {
     public Task<IEnumerable<PropositionResponse>> GetAll()
     {

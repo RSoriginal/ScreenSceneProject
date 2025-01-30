@@ -3,7 +3,7 @@ using ScreenScene.Business.Interfaces;
 
 namespace ScreenScene.Business.Services;
 
-public class HallService : IService<HallRequest, HallResponse>
+public class HallService : IHallService
 {
     public Task<IEnumerable<HallResponse>> GetAll()
     {

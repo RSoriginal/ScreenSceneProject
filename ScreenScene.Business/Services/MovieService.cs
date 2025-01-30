@@ -3,7 +3,7 @@ using ScreenScene.Business.Interfaces;
 
 namespace ScreenScene.Business.Services;
 
-public class MovieService: IService<MovieRequest, MovieResponse>
+public class MovieService : IMovieService
 {
     public Task<IEnumerable<MovieResponse>> GetAll()
     {

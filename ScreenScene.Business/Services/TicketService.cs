@@ -3,7 +3,7 @@ using ScreenScene.Business.Interfaces;
 
 namespace ScreenScene.Business.Services;
 
-public class TicketService : IService<TicketRequest, TicketResponse>
+public class TicketService : ITicketService
 {
     public Task<IEnumerable<TicketResponse>> GetAll()
     {

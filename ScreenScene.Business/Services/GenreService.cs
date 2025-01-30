@@ -3,7 +3,7 @@ using ScreenScene.Business.Interfaces;
 
 namespace ScreenScene.Business.Services;
 
-public class GenreService : IService<GenreRequest, GenreResponse>
+public class GenreService : IGenreService
 {
     public Task<IEnumerable<GenreResponse>> GetAll()
     {
