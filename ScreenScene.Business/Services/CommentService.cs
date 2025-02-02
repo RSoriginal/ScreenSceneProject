@@ -1,37 +1,58 @@
+using AutoMapper;
 using ScreenScene.Business.DTOs.Comment;
 using ScreenScene.Business.Interfaces;
+using ScreenScene.Data.Entities;
+using ScreenScene.Data.Interfaces;
 
 namespace ScreenScene.Business.Services;
 
 public class CommentService : ICommentService
 {
-    public Task<IEnumerable<CommentResponse>> GetAll()
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public CommentService(IMapper mapper, IUnitOfWork unitOfWork)
     {
-        throw new NotImplementedException();
+        _mapper = mapper;
+        _unitOfWork = unitOfWork;
     }
 
-    public Task<CommentResponse?> GetById(object id)
+    public async Task CreateAsync(CommentCreateRequest commentCreateRequest)
     {
-        throw new NotImplementedException();
+        var comment = _mapper.Map<Comment>(commentCreateRequest);
+        
+        await _unitOfWork.Comments.CreateAsync(comment);
+
+        await _unitOfWork.SaveChangesAsync();
     }
 
-    public Task Create(CommentRequest entity)
+    public async Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        await _unitOfWork.Comments.DeleteAsync(id);
+        
+        await _unitOfWork.SaveChangesAsync();
     }
 
-    public void Update(CommentRequest entity)
+    public async Task<IEnumerable<CommentResponse>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var comments = await _unitOfWork.Comments.GetAllAsync();
+        
+        return _mapper.Map<IEnumerable<CommentResponse>>(comments);
     }
 
-    public void Delete(CommentRequest entity)
+    public async Task<CommentResponse?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var comment = await _unitOfWork.Comments.GetByIdAsync(id);
+        
+        return _mapper.Map<CommentResponse>(comment);
     }
 
-    public Task Delete(object id)
+    public async Task UpdateAsync(CommentUpdateRequest commentUpdateRequest)
     {
-        throw new NotImplementedException();
+        var comment = _mapper.Map<Comment>(commentUpdateRequest);
+        
+        _unitOfWork.Comments.Update(comment);
+        
+        await _unitOfWork.SaveChangesAsync();
     }
 }

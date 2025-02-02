@@ -1,37 +1,59 @@
+using AutoMapper;
 using ScreenScene.Business.DTOs;
+using ScreenScene.Business.DTOs.Hall;
 using ScreenScene.Business.Interfaces;
+using ScreenScene.Data.Entities;
+using ScreenScene.Data.Interfaces;
 
 namespace ScreenScene.Business.Services;
 
 public class HallService : IHallService
 {
-    public Task<IEnumerable<HallResponse>> GetAll()
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public HallService(IMapper mapper, IUnitOfWork unitOfWork)
     {
-        throw new NotImplementedException();
+        _mapper = mapper;
+        _unitOfWork = unitOfWork;
     }
 
-    public Task<HallResponse?> GetById(object id)
+    public async Task CreateAsync(HallCreateRequest hallCreateRequest)
     {
-        throw new NotImplementedException();
+        var hall = _mapper.Map<Hall>(hallCreateRequest);
+        
+        await _unitOfWork.Halls.CreateAsync(hall);
+
+        await _unitOfWork.SaveChangesAsync();
     }
 
-    public Task Create(HallRequest entity)
+    public async Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        await _unitOfWork.Halls.DeleteAsync(id);
+        
+        await _unitOfWork.SaveChangesAsync();
     }
 
-    public void Update(HallRequest entity)
+    public async Task<IEnumerable<HallResponse>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var halls = await _unitOfWork.Halls.GetAllAsync();
+        
+        return _mapper.Map<IEnumerable<HallResponse>>(halls);
     }
 
-    public void Delete(HallRequest entity)
+    public async Task<HallResponse?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var hall = await _unitOfWork.Halls.GetByIdAsync(id);
+        
+        return _mapper.Map<HallResponse>(hall);
     }
 
-    public Task Delete(object id)
+    public async Task UpdateAsync(HallUpdateRequest hallRequest)
     {
-        throw new NotImplementedException();
+        var hall = _mapper.Map<Hall>(hallRequest);
+        
+        _unitOfWork.Halls.Update(hall);
+        
+        await _unitOfWork.SaveChangesAsync();
     }
 }

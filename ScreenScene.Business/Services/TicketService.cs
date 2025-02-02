@@ -1,37 +1,59 @@
+using AutoMapper;
+using ScreenScene.Business.DTOs.Actor;
 using ScreenScene.Business.DTOs.Ticket;
 using ScreenScene.Business.Interfaces;
+using ScreenScene.Data.Entities;
+using ScreenScene.Data.Interfaces;
 
 namespace ScreenScene.Business.Services;
 
 public class TicketService : ITicketService
 {
-    public Task<IEnumerable<TicketResponse>> GetAll()
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public TicketService(IMapper mapper, IUnitOfWork unitOfWork)
     {
-        throw new NotImplementedException();
+        _mapper = mapper;
+        _unitOfWork = unitOfWork;
     }
 
-    public Task<TicketResponse?> GetById(object id)
+    public async Task CreateAsync(TicketCreateRequest ticketCreateRequest)
     {
-        throw new NotImplementedException();
+        var ticket = _mapper.Map<Ticket>(ticketCreateRequest);
+
+        await _unitOfWork.Tickets.CreateAsync(ticket);
+
+        await _unitOfWork.SaveChangesAsync();
     }
 
-    public Task Create(TicketRequest entity)
+    public async Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        await _unitOfWork.Tickets.DeleteAsync(id);
+
+        await _unitOfWork.SaveChangesAsync();
     }
 
-    public void Update(TicketRequest entity)
+    public async Task<IEnumerable<TicketResponse>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var tickets = await _unitOfWork.Tickets.GetAllAsync();
+
+        return _mapper.Map<IEnumerable<TicketResponse>>(tickets);
     }
 
-    public void Delete(TicketRequest entity)
+    public async Task<TicketResponse?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var ticket = await _unitOfWork.Tickets.GetByIdAsync(id);
+
+        return _mapper.Map<TicketResponse>(ticket);
     }
 
-    public Task Delete(object id)
+    public async Task UpdateAsync(TicketUpdateRequest ticketUpdateRequest)
     {
-        throw new NotImplementedException();
+        var ticket = _mapper.Map<Ticket>(ticketUpdateRequest);
+
+        _unitOfWork.Tickets.Update(ticket);
+
+        await _unitOfWork.SaveChangesAsync();
     }
 }

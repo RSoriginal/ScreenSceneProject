@@ -1,37 +1,59 @@
+using AutoMapper;
 using ScreenScene.Business.DTOs;
+using ScreenScene.Business.DTOs.Actor;
 using ScreenScene.Business.Interfaces;
+using ScreenScene.Data.Entities;
+using ScreenScene.Data.Interfaces;
 
 namespace ScreenScene.Business.Services;
 
 public class SeanceService : ISeanceService
 {
-    public Task<IEnumerable<SeanceResponse>> GetAll()
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public SeanceService(IMapper mapper, IUnitOfWork unitOfWork)
     {
-        throw new NotImplementedException();
+        _mapper = mapper;
+        _unitOfWork = unitOfWork;
     }
 
-    public Task<SeanceResponse?> GetById(object id)
+    public async Task CreateAsync(SeanceCreateRequest seanceCreateRequest)
     {
-        throw new NotImplementedException();
+        var seance = _mapper.Map<Seance>(seanceCreateRequest);
+
+        await _unitOfWork.Seances.CreateAsync(seance);
+
+        await _unitOfWork.SaveChangesAsync();
     }
 
-    public Task Create(SeanceRequest entity)
+    public async Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        await _unitOfWork.Seances.DeleteAsync(id);
+
+        await _unitOfWork.SaveChangesAsync();
     }
 
-    public void Update(SeanceRequest entity)
+    public async Task<IEnumerable<SeanceResponse>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var seances = await _unitOfWork.Seances.GetAllAsync();
+
+        return _mapper.Map<IEnumerable<SeanceResponse>>(seances);
     }
 
-    public void Delete(SeanceRequest entity)
+    public async Task<SeanceResponse?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var seance = await _unitOfWork.Seances.GetByIdAsync(id);
+
+        return _mapper.Map<SeanceResponse>(seance);
     }
 
-    public Task Delete(object id)
+    public async Task UpdateAsync(SeanceUpdateRequest seanceUpdateRequest)
     {
-        throw new NotImplementedException();
+        var seance = _mapper.Map<Seance>(seanceUpdateRequest);
+
+        _unitOfWork.Seances.Update(seance);
+
+        await _unitOfWork.SaveChangesAsync();
     }
 }

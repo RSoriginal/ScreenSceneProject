@@ -3,9 +3,9 @@ using ScreenScene.Data.Entities;
 
 namespace ScreenScene.Business.DTOs;
 
-public class GenreRequest
+public class GenreCreateRequest
 {
-    [Required(ErrorMessage = "Genre name is required")]
-    [StringLength(55)]
+    [Required]
+    [StringLength(255, MinimumLength = 2, ErrorMessage = "The name must contain between 2 and 255 characters.")]
     public string Name { get; set; } = null!;
 }

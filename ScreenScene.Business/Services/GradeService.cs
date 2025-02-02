@@ -1,37 +1,58 @@
+using AutoMapper;
 using ScreenScene.Business.DTOs.Grade;
 using ScreenScene.Business.Interfaces;
+using ScreenScene.Data.Entities;
+using ScreenScene.Data.Interfaces;
 
 namespace ScreenScene.Business.Services;
 
 public class GradeService : IGradeService
 {
-    public Task<IEnumerable<GradeResponse>> GetAll()
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public GradeService(IMapper mapper, IUnitOfWork unitOfWork)
     {
-        throw new NotImplementedException();
+        _mapper = mapper;
+        _unitOfWork = unitOfWork;
     }
 
-    public Task<GradeResponse?> GetById(object id)
+    public async Task CreateAsync(GradeCreateRequest gradeCreateRequest)
     {
-        throw new NotImplementedException();
+        var grade = _mapper.Map<Grade>(gradeCreateRequest);
+        
+        await _unitOfWork.Grades.CreateAsync(grade);
+
+        await _unitOfWork.SaveChangesAsync();
     }
 
-    public Task Create(GradeRequest entity)
+    public async Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        await _unitOfWork.Grades.DeleteAsync(id);
+        
+        await _unitOfWork.SaveChangesAsync();
     }
 
-    public void Update(GradeRequest entity)
+    public async Task<IEnumerable<GradeResponse>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var grades = await _unitOfWork.Grades.GetAllAsync();
+        
+        return _mapper.Map<IEnumerable<GradeResponse>>(grades);
     }
 
-    public void Delete(GradeRequest entity)
+    public async Task<GradeResponse?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var grade = await _unitOfWork.Grades.GetByIdAsync(id);
+        
+        return _mapper.Map<GradeResponse>(grade);
     }
 
-    public Task Delete(object id)
+    public Task UpdateAsync(GradeUpdateRequest gradeRequest)
     {
-        throw new NotImplementedException();
+        var grade = _mapper.Map<Grade>(gradeRequest);
+        
+        _unitOfWork.Grades.Update(grade);
+        
+        return _unitOfWork.SaveChangesAsync();
     }
 }

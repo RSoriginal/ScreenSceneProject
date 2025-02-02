@@ -1,13 +1,13 @@
 using System.ComponentModel.DataAnnotations;
-using ScreenScene.Data.Entities;
-using ScreenScene.Data.Entities.Auth;
 
 namespace ScreenScene.Business.DTOs.Comment;
 
-public class CommentRequest
+public class CommentUpdateRequest
 {
+    public int Id { get; set; }
+    
     [Required] 
-    [StringLength(1000)]
+    [StringLength(1000, MinimumLength = 5)]
     public string Content { get; set; } = null!;
 
     [Required]

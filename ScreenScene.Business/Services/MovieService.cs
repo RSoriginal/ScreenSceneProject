@@ -1,37 +1,58 @@
+using AutoMapper;
 using ScreenScene.Business.DTOs.Request;
 using ScreenScene.Business.Interfaces;
+using ScreenScene.Data.Entities;
+using ScreenScene.Data.Interfaces;
 
 namespace ScreenScene.Business.Services;
 
 public class MovieService : IMovieService
 {
-    public Task<IEnumerable<MovieResponse>> GetAll()
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public MovieService(IMapper mapper, IUnitOfWork unitOfWork)
     {
-        throw new NotImplementedException();
+        _mapper = mapper;
+        _unitOfWork = unitOfWork;
     }
 
-    public Task<MovieResponse?> GetById(object id)
+    public async Task CreateAsync(MovieCreateRequest createRequest)
     {
-        throw new NotImplementedException();
+        var movie = _mapper.Map<Movie>(createRequest);
+        
+        await _unitOfWork.Movies.CreateAsync(movie);
+
+        await _unitOfWork.SaveChangesAsync();
+    }
+    
+    public async Task DeleteAsync(int id)
+    {
+        await _unitOfWork.Movies.DeleteAsync(id);
+        
+        await _unitOfWork.SaveChangesAsync();
     }
 
-    public Task Create(MovieRequest entity)
+    public async Task<IEnumerable<MovieResponse>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var movies = await _unitOfWork.Movies.GetAllAsync();
+        
+        return _mapper.Map<IEnumerable<MovieResponse>>(movies);
     }
 
-    public void Update(MovieRequest entity)
+    public async Task<MovieResponse?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var movie = await _unitOfWork.Movies.GetByIdAsync(id);
+        
+        return _mapper.Map<MovieResponse>(movie);
     }
 
-    public void Delete(MovieRequest entity)
+    public async Task UpdateAsync(MovieUpdateRequest updateRequest)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task Delete(object id)
-    {
-        throw new NotImplementedException();
+        var movie = _mapper.Map<Movie>(updateRequest);
+        
+        _unitOfWork.Movies.Update(movie);
+        
+        await _unitOfWork.SaveChangesAsync();
     }
 }

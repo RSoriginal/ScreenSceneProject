@@ -1,12 +1,13 @@
 using System.ComponentModel.DataAnnotations;
-using ScreenScene.Data.Entities;
 
 namespace ScreenScene.Business.DTOs;
 
-public class HallRequest
+public class HallUpdateRequest
 {
+    public int Id { get; set; }
+    
     [Required]
-    [StringLength(100)]
+    [StringLength(255, MinimumLength = 2, ErrorMessage = "The name must contain between 2 and 255 characters.")]
     public string Name { get; set; } = null!;
     
     [Required]
