@@ -11,18 +11,27 @@ public class Movie : BaseEntity
     public string Title { get; set; } = null!;
 
     [Required]
+    [StringLength(10000)]
+    [Url]
+    public string ImageUrl { get; set; } = null!;
+    
+    [Required]
     [StringLength(1000)]
     public string Description { get; set; } = null!;
     
     [Required]
     [StringLength(1000)]
+    [Url]
     public string TrailerUrl { get; set; } = null!;
     
     [Required]
-    public DateTime Duration { get; set; }
+    public TimeSpan Duration { get; set; }
     
     [Required]
     public DateTime ReleaseDate { get; set; }
+    
+    [Column(TypeName="decimal(18,2)")]
+    public decimal Price { get; set; }
     
     public IEnumerable<ActorMovie> ActorMovies { get; set; } = [];
     

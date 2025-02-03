@@ -15,7 +15,7 @@ namespace ScreenScene.Data.Repository
             _dbSet = context.Set<TEntity>();
         }
 
-        public async Task Create(TEntity entity)
+        public async Task CreateAsync(TEntity entity)
         {
             await _dbSet.AddAsync(entity);
         }
@@ -29,7 +29,7 @@ namespace ScreenScene.Data.Repository
             _dbSet.Remove(entity);
         }
 
-        public async Task Delete(object id)
+        public async Task DeleteAsync(object id)
         {
             var entity = await _dbSet.FindAsync(id);
 
@@ -37,12 +37,12 @@ namespace ScreenScene.Data.Repository
                 Delete(entity);
         }
 
-        public async Task<IEnumerable<TEntity>> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await _dbSet.AsNoTracking().ToListAsync();
         }
 
-        public async Task<TEntity?> GetById(object id)
+        public async Task<TEntity?> GetByIdAsync(object id)
         {
             return await _dbSet.FindAsync(id);
         }

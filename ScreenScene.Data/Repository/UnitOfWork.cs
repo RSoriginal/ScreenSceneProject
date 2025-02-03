@@ -21,11 +21,11 @@ namespace ScreenScene.Data.Repository
 
         public IGenericRepository<Actor> Actors => GetRepository<Actor>();
 
-        public IGenericRepository<ActorMovie> ActorMovies => GetRepository<ActorMovie>();
+        //public IGenericRepository<ActorMovie> ActorMovies => GetRepository<ActorMovie>();
 
         public IGenericRepository<Genre> Genres => GetRepository<Genre>();
 
-        public IGenericRepository<GenreMovie> GenreMovies => GetRepository<GenreMovie>();
+        //public IGenericRepository<GenreMovie> GenreMovies => GetRepository<GenreMovie>();
 
         public IGenericRepository<Hall> Halls => GetRepository<Hall>();
 
@@ -44,10 +44,7 @@ namespace ScreenScene.Data.Repository
             _context.Dispose();
         }
 
-        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
-        {
-            return await _context.SaveChangesAsync(cancellationToken);
-        }
+        public async Task<int> SaveChangesAsync() => await _context.SaveChangesAsync();
 
         private IGenericRepository<T> GetRepository<T>() where T : class
         {

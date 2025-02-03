@@ -1,14 +1,12 @@
-﻿using ScreenScene.Data.Entities;
-
-namespace ScreenScene.Data.Interfaces
+﻿namespace ScreenScene.Data.Interfaces
 {
     public interface IGenericRepository<TEntity> where TEntity : class
     {
-        Task<IEnumerable<TEntity>> GetAll();
-        Task<TEntity?> GetById(object id);
-        Task Create(TEntity entity);
+        Task<IEnumerable<TEntity>> GetAllAsync();
+        Task<TEntity?> GetByIdAsync(object id);
+        Task CreateAsync(TEntity entity);
         void Update(TEntity entity);
         void Delete(TEntity entity);
-        Task Delete(object id);
+        Task DeleteAsync(object id);
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ScreenScene.Data.Context;
 using ScreenScene.Data.Entities.Auth;
 using ScreenScene.Data.Interfaces;
+using ScreenScene.Data.Repository;
 
 namespace ScreenScene.Data
 {
@@ -21,6 +22,8 @@ namespace ScreenScene.Data
                 .AddDefaultTokenProviders();
 
             serviceCollection.AddScoped<IScreenSceneDbContext, ScreenSceneContext>();
+
+            serviceCollection.AddTransient<IUnitOfWork, UnitOfWork>();
         }
     }
 }
