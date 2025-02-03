@@ -13,7 +13,15 @@ namespace ScreenScene.Business
 
             serviceCollection.AddAutoMapper(typeof(MapperProfile));
 
-            serviceCollection.AddTransient<IActorService, ActorService>();
+            serviceCollection.AddTransient<IActorService, ActorService>()
+                .AddTransient<ICommentService, CommentService>()
+                .AddTransient<IGenreService, GenreService>()
+                .AddTransient<IGradeService, GradeService>()
+                .AddTransient<IHallService, HallService>()
+                .AddTransient<IMovieService, MovieService>()
+                .AddTransient<IPropositionService, PropositionService>()
+                .AddTransient<ISeanceService, SeanceService>()
+                .AddTransient<ITicketService, TicketService>();
         }
     }
 }
