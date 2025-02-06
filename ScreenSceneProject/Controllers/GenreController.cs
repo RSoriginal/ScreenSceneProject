@@ -22,15 +22,22 @@ public class GenreController : ControllerBase
     {
         await _genreService.CreateAsync(genreCreateRequest);
 
-        return Ok();
+        return StatusCode(201, new { message = "Genre created successfully" });
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
-        await _genreService.DeleteAsync(id);
+        try
+        {
+            await _genreService.DeleteAsync(id);
 
-        return Ok();
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
     }
 
     [HttpGet]
@@ -42,7 +49,9 @@ public class GenreController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
-        return Ok(await _genreService.GetByIdAsync(id));
+        var genre = await _genreService.GetByIdAsync(id);
+
+        return genre is null ? NotFound() : Ok(genre);
     }
 
     [HttpPut("{id}")]
@@ -52,6 +61,6 @@ public class GenreController : ControllerBase
 
         await _genreService.UpdateAsync(genreUpdateRequest);
 
-        return Ok();
+        return NoContent();
     }
 }

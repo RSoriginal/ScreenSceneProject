@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.EntityFrameworkCore;
 using ScreenScene.Data.Interfaces;
 
 namespace ScreenScene.Data.Repository
@@ -31,7 +32,7 @@ namespace ScreenScene.Data.Repository
 
         public async Task DeleteAsync(object id)
         {
-            var entity = await _dbSet.FindAsync(id);
+            var entity = await _dbSet.FindAsync(id) ?? throw new KeyNotFoundException($"Entity with id {id} not found."); 
 
             if (entity != null)
                 Delete(entity);

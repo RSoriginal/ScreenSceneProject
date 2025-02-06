@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using ScreenScene.Data.Entities;
 
 namespace ScreenScene.Business.DTOs;
 
@@ -13,8 +12,5 @@ public class HallCreateRequest
     public int RowCount { get; set; }
     
     [Required]
-    public int SeatCount { get; set; }
-    
-    [Required]
-    public int Capacity { get; set; }
+    public int ColumnCount { get; set; }
 }

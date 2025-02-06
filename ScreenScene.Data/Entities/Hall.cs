@@ -14,10 +14,7 @@ public class Hall : BaseEntity
     public int RowCount { get; set; }
     
     [Required]
-    public int SeatCount { get; set; }
-    
-    [Required]
-    public int Capacity { get; set; }
+    public int ColumnCount { get; set; }
     
     public IEnumerable<Seance> Seances { get; set; } = [];
 }

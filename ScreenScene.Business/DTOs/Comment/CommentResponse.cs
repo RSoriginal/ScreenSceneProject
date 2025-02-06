@@ -1,4 +1,4 @@
-using ScreenScene.Data.Entities;
+using ScreenScene.Business.DTOs.Request;
 using ScreenScene.Data.Entities.Auth;
 
 namespace ScreenScene.Business.DTOs.Comment;
@@ -15,5 +15,5 @@ public class CommentResponse
     
     public int MovieId { get; set; }
     
-    public Movie? Movie { get; set; }
+    public MovieResponse? Movie { get; set; }
 }

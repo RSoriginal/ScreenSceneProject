@@ -44,7 +44,8 @@ namespace ScreenScene.Data.Repository
             _context.Dispose();
         }
 
-        public async Task<int> SaveChangesAsync() => await _context.SaveChangesAsync();
+        public async Task<int> SaveChangesAsync() =>  await _context.SaveChangesAsync();
+
 
         private IGenericRepository<T> GetRepository<T>() where T : class
         {

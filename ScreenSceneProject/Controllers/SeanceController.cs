@@ -22,15 +22,22 @@ public class SeanceController : ControllerBase
     {
         await _seanceService.CreateAsync(seanceCreateRequest);
 
-        return Ok();
+        return StatusCode(201, new { message = "Seance created successfully" });
     }
     
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
-        await _seanceService.DeleteAsync(id);
+        try
+        {
+            await _seanceService.DeleteAsync(id);
 
-        return Ok();
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
     }
     
     [HttpGet]
@@ -42,7 +49,9 @@ public class SeanceController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
-        return Ok(await _seanceService.GetByIdAsync(id));
+        var seance = await _seanceService.GetByIdAsync(id);
+
+        return seance is null ? NotFound() : Ok(seance);
     }
     
     [HttpPut("{id}")]
@@ -52,6 +61,6 @@ public class SeanceController : ControllerBase
 
         await _seanceService.UpdateAsync(seanceUpdateRequest);
 
-        return Ok();
+        return NoContent();
     }
 }

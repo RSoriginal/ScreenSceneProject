@@ -22,15 +22,22 @@ public class GradeController : ControllerBase
     {
         await _gradeService.CreateAsync(gradeCreateRequest);
 
-        return Ok();
+        return StatusCode(201, new { message = "Grade created successfully" });
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
-        await _gradeService.DeleteAsync(id);
+        try
+        {
+            await _gradeService.DeleteAsync(id);
 
-        return Ok();
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
     }
 
     [HttpGet]
@@ -42,7 +49,9 @@ public class GradeController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
-        return Ok(await _gradeService.GetByIdAsync(id));
+        var grade = await _gradeService.GetByIdAsync(id);
+
+        return grade is null ? NotFound() : Ok(grade);
     }
 
     [HttpPut("{id}")]
@@ -52,6 +61,6 @@ public class GradeController : ControllerBase
 
         await _gradeService.UpdateAsync(gradeUpdateRequest);
 
-        return Ok();
+        return NoContent();
     }
 }

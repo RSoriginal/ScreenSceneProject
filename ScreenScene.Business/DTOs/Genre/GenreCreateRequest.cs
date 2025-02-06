@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using ScreenScene.Data.Entities;
 
 namespace ScreenScene.Business.DTOs;
 

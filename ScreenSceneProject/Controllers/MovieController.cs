@@ -22,15 +22,22 @@ public class MovieController : ControllerBase
     {
         await _movieService.CreateAsync(movieCreateRequest);
 
-        return Ok();
+        return StatusCode(201, new { message = "Movie created successfully" });
     }
     
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
-        await _movieService.DeleteAsync(id);
+        try
+        {
+            await _movieService.DeleteAsync(id);
 
-        return Ok();
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
     }
 
     [HttpGet]
@@ -42,7 +49,9 @@ public class MovieController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
-        return Ok(await _movieService.GetByIdAsync(id));
+        var movie = await _movieService.GetByIdAsync(id);
+
+        return movie is null ? NotFound() : Ok(movie);
     }
     
     [HttpPut("{id}")]
@@ -52,6 +61,18 @@ public class MovieController : ControllerBase
 
         await _movieService.UpdateAsync(movieUpdateRequest);
 
-        return Ok();
+        return NoContent();
+    }
+
+    [HttpGet("current")]
+    public async Task<IActionResult> GetCurrentMoviesAsync()
+    {
+        return Ok(await _movieService.GetCurrentMoviesAsync());
+    }
+
+    [HttpGet("upcoming")]
+    public async Task<IActionResult> GetUpcomingMoviesAsync()
+    {
+        return Ok(await _movieService.GetUpcomingMoviesAsync());
     }
 }
