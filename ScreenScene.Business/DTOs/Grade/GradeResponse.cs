@@ -1,4 +1,4 @@
-using ScreenScene.Data.Entities;
+using ScreenScene.Business.DTOs.Request;
 using ScreenScene.Data.Entities.Auth;
 
 namespace ScreenScene.Business.DTOs.Grade;
@@ -7,7 +7,7 @@ public class GradeResponse
 {
     public int MovieId { get; set; }
     
-    public Movie? Movie { get; set; }
+    public MovieResponse? Movie { get; set; }
     
     public int Mark { get; set; }
     

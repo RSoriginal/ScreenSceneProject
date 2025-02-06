@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ScreenScene.Data.Context;
 
@@ -11,9 +12,11 @@ using ScreenScene.Data.Context;
 namespace ScreenScene.Data.Migrations
 {
     [DbContext(typeof(ScreenSceneContext))]
-    partial class ScreenSceneContextModelSnapshot : ModelSnapshot
+    [Migration("20250205140152_RefactorClassStructure")]
+    partial class RefactorClassStructure
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -361,7 +364,7 @@ namespace ScreenScene.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ColumnCount")
+                    b.Property<int>("Capacity")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -370,6 +373,9 @@ namespace ScreenScene.Data.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("RowCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SeatCount")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

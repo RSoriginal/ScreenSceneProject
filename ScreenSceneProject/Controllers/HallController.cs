@@ -22,15 +22,22 @@ public class HallController : ControllerBase
     {
         await _hallService.CreateAsync(hallCreateRequest);
 
-        return Ok();
+        return StatusCode(201, new { message = "Hall created successfully" });
     }
     
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
-        await _hallService.DeleteAsync(id);
+        try
+        {
+            await _hallService.DeleteAsync(id);
 
-        return Ok();
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
     }
     
     [HttpGet]
@@ -42,7 +49,9 @@ public class HallController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
-        return Ok(await _hallService.GetByIdAsync(id));
+        var hall = await _hallService.GetByIdAsync(id);
+
+        return hall is null ? NotFound() : Ok(hall);
     }
     
     [HttpPut("{id}")]
@@ -52,6 +61,6 @@ public class HallController : ControllerBase
 
         await _hallService.UpdateAsync(hallUpdateRequest);
 
-        return Ok();
+        return NoContent();
     }
 }

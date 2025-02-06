@@ -1,4 +1,3 @@
-using ScreenScene.Data.Entities;
 using ScreenScene.Data.Entities.Auth;
 
 namespace ScreenScene.Business.DTOs.Ticket;
@@ -17,5 +16,5 @@ public class TicketResponse
     
     public int SeanceId { get; set; }
     
-    public Seance? Seance { get; set; }
+    public SeanceResponse? Seance { get; set; }
 }

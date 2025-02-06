@@ -22,15 +22,22 @@ public class CommentController : ControllerBase
     {
         await _commentService.CreateAsync(commentCreateRequest);
 
-        return Ok();
+        return StatusCode(201, new { message = "Comment created successfully" });
     }
     
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
-        await _commentService.DeleteAsync(id);
+        try
+        {
+            await _commentService.DeleteAsync(id);
 
-        return Ok();
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
     }
     
     [HttpGet]
@@ -42,7 +49,9 @@ public class CommentController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
-        return Ok(await _commentService.GetByIdAsync(id));
+        var comment = await _commentService.GetByIdAsync(id);
+
+        return comment is null ? NotFound() : Ok(comment);
     }
     
     [HttpPut("{id}")]
@@ -52,6 +61,6 @@ public class CommentController : ControllerBase
 
         await _commentService.UpdateAsync(commentUpdateRequest);
 
-        return Ok();
+        return NoContent();
     }
 }

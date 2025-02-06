@@ -22,15 +22,22 @@ public class PropositionController : ControllerBase
     {
         await _propositionService.CreateAsync(propositionCreateRequest);
 
-        return Ok();
+        return StatusCode(201, new { message = "Proposition created successfully" });
     }
     
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
-        await _propositionService.DeleteAsync(id);
+        try
+        {
+            await _propositionService.DeleteAsync(id);
 
-        return Ok();
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
     }
     
     [HttpGet]
@@ -42,9 +49,10 @@ public class PropositionController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
-        return Ok(await _propositionService.GetByIdAsync(id));
+        var proposition = await _propositionService.GetByIdAsync(id);
+
+        return proposition is null ? NotFound() : Ok(proposition);
     }
-    
      
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] PropositionUpdateRequest propositionUpdateRequest)
@@ -53,6 +61,6 @@ public class PropositionController : ControllerBase
 
         await _propositionService.UpdateAsync(propositionUpdateRequest);
 
-        return Ok();
+        return NoContent();
     }
 }

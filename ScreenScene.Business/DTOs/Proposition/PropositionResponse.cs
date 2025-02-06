@@ -1,4 +1,4 @@
-using ScreenScene.Data.Entities;
+using ScreenScene.Business.DTOs.Request;
 using ScreenScene.Data.Entities.Auth;
 
 namespace ScreenScene.Business.DTOs.Proposition;
@@ -11,9 +11,9 @@ public class PropositionResponse
     
     public int MovieId { get; set; }
     
-    public Movie? Movie { get; set; }
+    public MovieResponse? Movie { get; set; }
     
-    public string UserId { get; set; }
-    
+    public string UserId { get; set; } = null!;
+
     public ApplicationUser? User { get; set; }
 }

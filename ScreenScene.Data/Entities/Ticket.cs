@@ -14,7 +14,7 @@ public class Ticket : BaseEntity
     public int SeatNumber { get; set; }
     
     [Required]
-    [Precision(18, 2)]
+    [Column(TypeName = "decimal(18,2)")]
     public decimal Price { get; set; }
     
     [Required]

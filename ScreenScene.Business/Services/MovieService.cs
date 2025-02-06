@@ -17,6 +17,22 @@ public class MovieService : IMovieService
         _unitOfWork = unitOfWork;
     }
 
+    public async Task<IEnumerable<MovieResponse>> GetCurrentMoviesAsync()
+    {
+        var movies = await _unitOfWork.Movies.GetAllAsync();
+        var currentMovies = movies.Where(m => m.ReleaseDate <= DateTime.UtcNow);
+
+        return _mapper.Map<IEnumerable<MovieResponse>>(currentMovies);
+    }
+
+    public async Task<IEnumerable<MovieResponse>> GetUpcomingMoviesAsync()
+    {
+        var movies = await _unitOfWork.Movies.GetAllAsync();
+        var upcomingMovies = movies.Where(m => m.ReleaseDate > DateTime.UtcNow);
+
+        return _mapper.Map<IEnumerable<MovieResponse>>(upcomingMovies);
+    }
+
     public async Task CreateAsync(MovieCreateRequest createRequest)
     {
         var movie = _mapper.Map<Movie>(createRequest);

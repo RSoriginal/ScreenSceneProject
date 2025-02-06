@@ -22,15 +22,22 @@ public class ActorController : ControllerBase
     {
         await _actorService.CreateAsync(actorRequest);
 
-        return Ok();
+        return StatusCode(201, new { message = "Actor created successfully" });
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
-        await _actorService.DeleteAsync(id);
+        try
+        {
+            await _actorService.DeleteAsync(id);
 
-        return Ok();
+            return NoContent();
+        }
+        catch (KeyNotFoundException) 
+        {
+            return NotFound();
+        }
     }
 
     [HttpGet]
@@ -40,18 +47,20 @@ public class ActorController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetByIdAsync(int id)
+    public async Task<IActionResult> GetByIdAsync([FromRoute] int id)
     {
-        return Ok(await _actorService.GetByIdAsync(id));
+        var actor = await _actorService.GetByIdAsync(id);
+
+        return actor is null ? NotFound() : Ok(actor);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(int id, [FromBody] ActorUpdateRequest actorRequest)
+    public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] ActorUpdateRequest actorRequest)
     {
         actorRequest.Id = id;
 
         await _actorService.UpdateAsync(actorRequest);
 
-        return Ok();
+        return NoContent();
     }
 }

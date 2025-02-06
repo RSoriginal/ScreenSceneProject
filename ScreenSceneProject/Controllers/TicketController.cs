@@ -22,15 +22,22 @@ public class TicketController : ControllerBase
     {
         await _ticketService.CreateAsync(ticketCreateRequest);
 
-        return Ok();
+        return StatusCode(201, new { message = "Ticket created successfully" });
     }
     
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
-        await _ticketService.DeleteAsync(id);
+        try
+        {
+            await _ticketService.DeleteAsync(id);
 
-        return Ok();
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
     }
     
     [HttpGet]
@@ -42,9 +49,10 @@ public class TicketController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
-        return Ok(await _ticketService.GetByIdAsync(id));
+        var ticket = await _ticketService.GetByIdAsync(id);
+
+        return ticket is null ? NotFound() : Ok(ticket);
     }
-    
         
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] TicketUpdateRequest ticketUpdateRequest)
@@ -53,6 +61,6 @@ public class TicketController : ControllerBase
 
         await _ticketService.UpdateAsync(ticketUpdateRequest);
 
-        return Ok();
+        return NoContent();
     }
 }

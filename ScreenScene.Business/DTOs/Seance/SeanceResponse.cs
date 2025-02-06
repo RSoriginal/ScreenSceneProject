@@ -1,5 +1,6 @@
+using ScreenScene.Business.DTOs.Hall;
+using ScreenScene.Business.DTOs.Request;
 using ScreenScene.Business.DTOs.Ticket;
-using ScreenScene.Data.Entities;
 
 namespace ScreenScene.Business.DTOs;
 
@@ -9,11 +10,11 @@ public class SeanceResponse
     
     public int MovieId { get; set; }
     
-    public Movie? Movie { get; set; }
+    public MovieResponse? Movie { get; set; }
     
     public int HallId { get; set; }
     
-    public Hall? Hall { get; set; }
+    public HallResponse? Hall { get; set; }
 
     public IEnumerable<TicketResponse> Tickets { get; set; } = [];
 }
