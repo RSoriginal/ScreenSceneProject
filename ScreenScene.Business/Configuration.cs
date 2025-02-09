@@ -2,6 +2,7 @@
 using ScreenScene.Business.Interfaces;
 using ScreenScene.Business.MapperConfiguration;
 using ScreenScene.Business.Services;
+using ScreenScene.Business.Services.Auth;
 
 namespace ScreenScene.Business
 {
@@ -21,7 +22,9 @@ namespace ScreenScene.Business
                 .AddTransient<IMovieService, MovieService>()
                 .AddTransient<IPropositionService, PropositionService>()
                 .AddTransient<ISeanceService, SeanceService>()
-                .AddTransient<ITicketService, TicketService>();
+                .AddTransient<ITicketService, TicketService>()
+                .AddTransient<IAuthenticationService, AuthenticationService>()
+                .AddTransient<ITokenService, TokenService>();
         }
     }
 }
