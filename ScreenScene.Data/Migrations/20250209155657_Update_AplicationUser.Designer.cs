@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ScreenScene.Data.Context;
 
@@ -11,9 +12,11 @@ using ScreenScene.Data.Context;
 namespace ScreenScene.Data.Migrations
 {
     [DbContext(typeof(ScreenSceneContext))]
-    partial class ScreenSceneContextModelSnapshot : ModelSnapshot
+    [Migration("20250209155657_Update_AplicationUser")]
+    partial class Update_AplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

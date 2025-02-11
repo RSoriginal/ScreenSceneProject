@@ -17,5 +17,5 @@ public class Seance : BaseEntity
     public int HallId { get; set; }
     public Hall? Hall { get; set; }
 
-    public IEnumerable<Ticket> Tickets { get; set; } = [];
+    public ICollection<Ticket> Tickets { get; set; } = [];
 }

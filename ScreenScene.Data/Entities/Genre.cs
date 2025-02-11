@@ -12,5 +12,5 @@ public class Genre : BaseEntity
     [StringLength(55)]
     public string Name { get; set; } = null!;
 
-    public IEnumerable<GenreMovie> GenreMovies { get; set; } = [];
+    public ICollection<GenreMovie> GenreMovies { get; set; } = [];
 }

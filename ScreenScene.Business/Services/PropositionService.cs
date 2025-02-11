@@ -35,14 +35,16 @@ public class PropositionService : IPropositionService
     
     public async Task<IEnumerable<PropositionResponse>> GetAllAsync()
     {
-        var propositions = await _unitOfWork.Propositions.GetAllAsync();
+        var propositions = await _unitOfWork.Propositions.QueryAsync();
 
         return _mapper.Map<IEnumerable<PropositionResponse>>(propositions);
     }
     
     public async Task<PropositionResponse?> GetByIdAsync(int id)
     {
-        var proposition = await _unitOfWork.Propositions.GetByIdAsync(id);
+        var propositions = await _unitOfWork.Propositions.QueryAsync(filter: f => f.Id == id);
+
+        var proposition = propositions.FirstOrDefault();
 
         return _mapper.Map<PropositionResponse>(proposition);
     }

@@ -35,14 +35,16 @@ public class ActorService : IActorService
 
     public async Task<IEnumerable<ActorResponse>> GetAllAsync()
     {
-        var actors = await _unitOfWork.Actors.GetAllAsync();
+        var actors = await _unitOfWork.Actors.QueryAsync();
 
         return _mapper.Map<IEnumerable<ActorResponse>>(actors);
     }
 
     public async Task<ActorResponse?> GetByIdAsync(int id)
     {
-        var actor = await _unitOfWork.Actors.GetByIdAsync(id);
+        var actors = await _unitOfWork.Actors.QueryAsync(filter: f => f.Id == id);
+
+        var actor = actors.FirstOrDefault();
 
         return _mapper.Map<ActorResponse>(actor);
     }

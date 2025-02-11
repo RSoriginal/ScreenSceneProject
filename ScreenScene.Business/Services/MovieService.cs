@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using ScreenScene.Business.DTOs.Request;
 using ScreenScene.Business.Interfaces;
 using ScreenScene.Data.Entities;
@@ -19,7 +20,8 @@ public class MovieService : IMovieService
 
     public async Task<IEnumerable<MovieResponse>> GetCurrentMoviesAsync()
     {
-        var movies = await _unitOfWork.Movies.GetAllAsync();
+        var movies = new List<Movie>();
+        //var movies = await _unitOfWork.Movies.GetAllAsync();
         var currentMovies = movies.Where(m => m.ReleaseDate <= DateTime.UtcNow);
 
         return _mapper.Map<IEnumerable<MovieResponse>>(currentMovies);
@@ -27,7 +29,8 @@ public class MovieService : IMovieService
 
     public async Task<IEnumerable<MovieResponse>> GetUpcomingMoviesAsync()
     {
-        var movies = await _unitOfWork.Movies.GetAllAsync();
+        var movies = new List<Movie>();
+        //var movies = await _unitOfWork.Movies.GetAllAsync();
         var upcomingMovies = movies.Where(m => m.ReleaseDate > DateTime.UtcNow);
 
         return _mapper.Map<IEnumerable<MovieResponse>>(upcomingMovies);
@@ -36,39 +39,48 @@ public class MovieService : IMovieService
     public async Task CreateAsync(MovieCreateRequest createRequest)
     {
         var movie = _mapper.Map<Movie>(createRequest);
-        
+
         await _unitOfWork.Movies.CreateAsync(movie);
 
         await _unitOfWork.SaveChangesAsync();
     }
-    
+
     public async Task DeleteAsync(int id)
     {
         await _unitOfWork.Movies.DeleteAsync(id);
-        
+
         await _unitOfWork.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<MovieResponse>> GetAllAsync()
     {
-        var movies = await _unitOfWork.Movies.GetAllAsync();
-        
+        var movies = await _unitOfWork.Movies.QueryAsync(
+            q => q.Include(m => m.ActorMovies).ThenInclude(am => am.Actor)
+                  .Include(m => m.GenreMovies).ThenInclude(gm => gm.Genre)
+                  .AsSplitQuery());
+
         return _mapper.Map<IEnumerable<MovieResponse>>(movies);
     }
 
     public async Task<MovieResponse?> GetByIdAsync(int id)
     {
-        var movie = await _unitOfWork.Movies.GetByIdAsync(id);
-        
+        var movies = await _unitOfWork.Movies.QueryAsync(
+            q => q.Include(m => m.ActorMovies).ThenInclude(am => am.Actor)
+                  .Include(m => m.GenreMovies).ThenInclude(gm => gm.Genre)
+                  .AsSplitQuery(),
+            f => f.Id == id);
+
+        var movie = movies.FirstOrDefault();
+
         return _mapper.Map<MovieResponse>(movie);
     }
 
     public async Task UpdateAsync(MovieUpdateRequest updateRequest)
     {
         var movie = _mapper.Map<Movie>(updateRequest);
-        
+
         _unitOfWork.Movies.Update(movie);
-        
+
         await _unitOfWork.SaveChangesAsync();
     }
 }

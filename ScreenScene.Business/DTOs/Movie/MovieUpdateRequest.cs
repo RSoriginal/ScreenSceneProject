@@ -36,5 +36,11 @@ public class MovieUpdateRequest
     [Required]
     [Column(TypeName = "decimal(18,2)")]
     [Range(0.01, 10000.00, ErrorMessage = "The price must be between 0.01 and 10,000.00.")]
-    public decimal Price { get; set; } 
+    public decimal Price { get; set; }
+
+    [Required]
+    public IEnumerable<int> GenreIds { get; set; } = [];
+
+    [Required]
+    public IEnumerable<int> ActorIds { get; set; } = [];
 }

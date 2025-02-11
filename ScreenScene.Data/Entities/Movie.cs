@@ -33,15 +33,15 @@ public class Movie : BaseEntity
     [Column(TypeName="decimal(18,2)")]
     public decimal Price { get; set; }
     
-    public IEnumerable<ActorMovie> ActorMovies { get; set; } = [];
+    public ICollection<ActorMovie> ActorMovies { get; set; } = [];
     
-    public IEnumerable<GenreMovie> GenreMovies { get; set; } = [];
+    public ICollection<GenreMovie> GenreMovies { get; set; } = [];
     
-    public IEnumerable<Seance> Seances { get; set; } = [];
+    public ICollection<Seance> Seances { get; set; } = [];
     
-    public IEnumerable<Proposition> Propositions { get; set; } = [];
+    public ICollection<Proposition> Propositions { get; set; } = [];
     
-    public IEnumerable<Grade> Grades { get; set; } = [];
+    public ICollection<Grade> Grades { get; set; } = [];
     
-    public IEnumerable<Comment> Comments { get; set; } = [];
+    public ICollection<Comment> Comments { get; set; } = [];
 }

@@ -35,14 +35,16 @@ public class CommentService : ICommentService
 
     public async Task<IEnumerable<CommentResponse>> GetAllAsync()
     {
-        var comments = await _unitOfWork.Comments.GetAllAsync();
+        var comments = await _unitOfWork.Comments.QueryAsync();
         
         return _mapper.Map<IEnumerable<CommentResponse>>(comments);
     }
 
     public async Task<CommentResponse?> GetByIdAsync(int id)
     {
-        var comment = await _unitOfWork.Comments.GetByIdAsync(id);
+        var comments = await _unitOfWork.Comments.QueryAsync(filter: f => f.Id == id);
+
+        var comment = comments.FirstOrDefault();
         
         return _mapper.Map<CommentResponse>(comment);
     }
