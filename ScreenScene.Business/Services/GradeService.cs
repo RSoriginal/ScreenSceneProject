@@ -35,14 +35,16 @@ public class GradeService : IGradeService
 
     public async Task<IEnumerable<GradeResponse>> GetAllAsync()
     {
-        var grades = await _unitOfWork.Grades.GetAllAsync();
+        var grades = await _unitOfWork.Grades.QueryAsync();
         
         return _mapper.Map<IEnumerable<GradeResponse>>(grades);
     }
 
     public async Task<GradeResponse?> GetByIdAsync(int id)
     {
-        var grade = await _unitOfWork.Grades.GetByIdAsync(id);
+        var grades = await _unitOfWork.Grades.QueryAsync(filter: f => f.Id == id);
+
+        var grade = grades.FirstOrDefault();
         
         return _mapper.Map<GradeResponse>(grade);
     }

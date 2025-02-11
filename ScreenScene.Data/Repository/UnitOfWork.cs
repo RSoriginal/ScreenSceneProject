@@ -21,11 +21,7 @@ namespace ScreenScene.Data.Repository
 
         public IGenericRepository<Actor> Actors => GetRepository<Actor>();
 
-        //public IGenericRepository<ActorMovie> ActorMovies => GetRepository<ActorMovie>();
-
         public IGenericRepository<Genre> Genres => GetRepository<Genre>();
-
-        //public IGenericRepository<GenreMovie> GenreMovies => GetRepository<GenreMovie>();
 
         public IGenericRepository<Hall> Halls => GetRepository<Hall>();
 

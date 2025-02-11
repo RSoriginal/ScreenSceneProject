@@ -36,9 +36,24 @@ namespace ScreenScene.Business.MapperConfiguration
             CreateMap<GradeUpdateRequest, Grade>();
             CreateMap<Grade, GradeResponse>();
 
-            CreateMap<MovieCreateRequest, Movie>();
-            CreateMap<MovieUpdateRequest, Movie>();
-            CreateMap<Movie, MovieResponse>();
+            CreateMap<MovieCreateRequest, Movie>()
+                .ForMember(dest => dest.GenreMovies, opt => opt.MapFrom(src => src.GenreIds.Select(id => new GenreMovie { GenreId = id })))
+                .ForMember(dest => dest.ActorMovies, opt => opt.MapFrom(src => src.ActorIds.Select(id => new ActorMovie { ActorId = id })));
+            CreateMap<MovieUpdateRequest, Movie>()
+                .ForMember(dest => dest.GenreMovies, opt => opt.MapFrom(src => src.GenreIds.Select(id => new GenreMovie { GenreId = id })))
+                .ForMember(dest => dest.ActorMovies, opt => opt.MapFrom(src => src.ActorIds.Select(id => new ActorMovie { ActorId = id })));
+            CreateMap<Movie, MovieResponse>()
+                .ForMember(dest => dest.Genres, opt => opt.MapFrom(src => src.GenreMovies.Select(genre => new GenreResponse
+                {
+                    Id = genre.GenreId,
+                    Name = genre.Genre!.Name
+                })))
+                .ForMember(dest => dest.Actors, opt => opt.MapFrom(src => src.ActorMovies.Select(actor => new ActorResponse
+                {
+                    Id = actor.ActorId,
+                    FirstName = actor.Actor!.FirstName,
+                    LastName = actor.Actor.LastName
+                })));
 
             CreateMap<PropositionCreateRequest, Proposition>();
             CreateMap<PropositionUpdateRequest, Proposition>();

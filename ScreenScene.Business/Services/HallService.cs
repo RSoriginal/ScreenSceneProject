@@ -36,14 +36,16 @@ public class HallService : IHallService
 
     public async Task<IEnumerable<HallResponse>> GetAllAsync()
     {
-        var halls = await _unitOfWork.Halls.GetAllAsync();
+        var halls = await _unitOfWork.Halls.QueryAsync();
         
         return _mapper.Map<IEnumerable<HallResponse>>(halls);
     }
 
     public async Task<HallResponse?> GetByIdAsync(int id)
     {
-        var hall = await _unitOfWork.Halls.GetByIdAsync(id);
+        var halls = await _unitOfWork.Halls.QueryAsync(filter: f => f.Id == id);
+
+        var hall = halls.FirstOrDefault();
         
         return _mapper.Map<HallResponse>(hall);
     }

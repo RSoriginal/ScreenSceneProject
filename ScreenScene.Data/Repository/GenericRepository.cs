@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ScreenScene.Data.Interfaces;
+using System.Linq.Expressions;
 
 namespace ScreenScene.Data.Repository
 {
@@ -38,14 +38,20 @@ namespace ScreenScene.Data.Repository
                 Delete(entity);
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public async Task<IEnumerable<TEntity>> QueryAsync(
+            Func<IQueryable<TEntity>, IQueryable<TEntity>>? includeNavigations,
+            Expression<Func<TEntity, bool>>? filter,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy)
         {
-            return await _dbSet.AsNoTracking().ToListAsync();
-        }
+            var query = _dbSet.AsNoTracking();
 
-        public async Task<TEntity?> GetByIdAsync(object id)
-        {
-            return await _dbSet.FindAsync(id);
+            if (includeNavigations is not null)
+                query = includeNavigations(query);
+
+            if (filter is not null)
+                query = query.Where(filter);
+
+            return await (orderBy?.Invoke(query) ?? query).ToListAsync();
         }
 
         public void Update(TEntity entity)

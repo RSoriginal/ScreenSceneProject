@@ -7,6 +7,8 @@ namespace ScreenScene.Business.DTOs.Request;
 
 public class MovieResponse
 {
+    public int Id { get; set; }
+
     public string Title { get; set; } = null!;
     
     public string ImageUrl { get; set; } = null!;
@@ -21,9 +23,9 @@ public class MovieResponse
     
     public decimal Price { get; set; }
     
-    public IEnumerable<ActorResponse> ActorMovies { get; set; } = [];
+    public IEnumerable<ActorResponse> Actors { get; set; } = [];
     
-    public IEnumerable<GenreResponse> GenreMovies { get; set; } = [];
+    public IEnumerable<GenreResponse> Genres { get; set; } = [];
     
     public IEnumerable<SeanceResponse> Seances { get; set; } = [];
     

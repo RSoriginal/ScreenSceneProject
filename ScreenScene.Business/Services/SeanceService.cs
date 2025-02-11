@@ -36,14 +36,25 @@ public class SeanceService : ISeanceService
 
     public async Task<IEnumerable<SeanceResponse>> GetAllAsync()
     {
-        var seances = await _unitOfWork.Seances.GetAllAsync();
+        var seances = await _unitOfWork.Seances.QueryAsync();
 
         return _mapper.Map<IEnumerable<SeanceResponse>>(seances);
     }
 
+    public async Task<IEnumerable<SeanceResponse>> GetByMovieAndDateAsync(int movieId, DateTime date)
+    {
+        var seances = new List<Seance>();
+        //var seances = await _unitOfWork.Seances.GetAllAsync();
+        var sortSeances = seances.Where(s => s.MovieId == movieId && s.AssignedAt.Date == date);
+
+        return _mapper.Map<IEnumerable<SeanceResponse>>(sortSeances);
+    }
+
     public async Task<SeanceResponse?> GetByIdAsync(int id)
     {
-        var seance = await _unitOfWork.Seances.GetByIdAsync(id);
+        var seances = await _unitOfWork.Seances.QueryAsync(filter: f => f.Id == id);
+
+        var seance = seances.FirstOrDefault();
 
         return _mapper.Map<SeanceResponse>(seance);
     }

@@ -14,5 +14,5 @@ public class Actor : BaseEntity
     [StringLength(255)]
     public string LastName { get; set; } = null!;
     
-    public IEnumerable<ActorMovie> ActorMovies { get; set; } = [];
+    public ICollection<ActorMovie> ActorMovies { get; set; } = [];
 }

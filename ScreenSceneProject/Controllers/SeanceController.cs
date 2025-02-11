@@ -45,7 +45,15 @@ public class SeanceController : ControllerBase
     {
         return Ok(await _seanceService.GetAllAsync());
     }
-    
+
+    [HttpGet("movie/{movieId}/date/{date}")]
+    public async Task<IActionResult> GetByMovieAndDateAsync(int movieId, DateTime date)
+    {
+        var seances = await _seanceService.GetByMovieAndDateAsync(movieId, date);
+
+        return Ok(seances);
+    }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetByIdAsync(int id)
     {

@@ -16,5 +16,5 @@ public class Hall : BaseEntity
     [Required]
     public int ColumnCount { get; set; }
     
-    public IEnumerable<Seance> Seances { get; set; } = [];
+    public ICollection<Seance> Seances { get; set; } = [];
 }

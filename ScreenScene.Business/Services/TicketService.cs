@@ -1,5 +1,4 @@
 using AutoMapper;
-using ScreenScene.Business.DTOs.Actor;
 using ScreenScene.Business.DTOs.Ticket;
 using ScreenScene.Business.Interfaces;
 using ScreenScene.Data.Entities;
@@ -36,14 +35,16 @@ public class TicketService : ITicketService
 
     public async Task<IEnumerable<TicketResponse>> GetAllAsync()
     {
-        var tickets = await _unitOfWork.Tickets.GetAllAsync();
+        var tickets = await _unitOfWork.Tickets.QueryAsync();
 
         return _mapper.Map<IEnumerable<TicketResponse>>(tickets);
     }
 
     public async Task<TicketResponse?> GetByIdAsync(int id)
     {
-        var ticket = await _unitOfWork.Tickets.GetByIdAsync(id);
+        var tickets = await _unitOfWork.Tickets.QueryAsync(filter: f => f.Id == id);
+
+        var ticket = tickets.FirstOrDefault();
 
         return _mapper.Map<TicketResponse>(ticket);
     }
