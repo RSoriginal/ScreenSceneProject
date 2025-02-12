@@ -56,9 +56,7 @@ public class GradeService : IGradeService
         if (!grades.Any())
             return 0.0;
         
-        double avgGrades = grades.Average(g => g.Mark);
-
-        return avgGrades;
+        return grades.Average(g => g.Mark);
     }
 
     public async Task<GradeResponse> GetUserGradeAsync(int movieId, string userId)

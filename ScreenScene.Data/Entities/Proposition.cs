@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ScreenScene.Data.Entities;
@@ -12,7 +11,7 @@ public class Proposition : BaseEntity
     public string Description {get; set;} = null!;
 
     [Required]
-    [Precision(18, 2)]
+    [Column(TypeName = "decimal(18,2)")]
     public decimal Discount { get; set; }
     
     [Required]

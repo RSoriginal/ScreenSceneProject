@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace ScreenScene.Data.Entities.Auth;
+﻿namespace ScreenScene.Data.Entities.Auth;
 
 public  class UserRoles
 {

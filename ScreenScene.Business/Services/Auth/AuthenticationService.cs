@@ -24,6 +24,21 @@ public class AuthenticationService : TokenBase, IAuthenticationService
         _roleManager = roleManager;
     }
 
+    public async Task<ApplicationUser?> GetUserAsync(ClaimsPrincipal userPrincipal)
+    {
+        var qwe = await _userManager.GetUserAsync(userPrincipal);
+
+        var userId = _userManager.GetUserId(userPrincipal);
+        if (userId == null)
+        {
+            return null; // У пользователя нет ID
+        }
+
+        var user = await _userManager.FindByIdAsync(userId);
+
+        return qwe;
+    }
+
     public async Task<LoginResponse> LoginAsync(LoginRequest login)
     {
         var user = await _userManager.FindByNameAsync(login.UserName) ?? throw new Exception("Invalid username or password");
@@ -62,7 +77,7 @@ public class AuthenticationService : TokenBase, IAuthenticationService
         };
     }
 
-    public async Task<RegistrationResponse> RegistrationAsync(RegistrationRequest registration)
+    public async Task RegistrationAsync(RegistrationRequest registration)
     {
         var userExists = await _userManager.FindByNameAsync(registration.UserName);
 
@@ -76,6 +91,7 @@ public class AuthenticationService : TokenBase, IAuthenticationService
             FirstName = registration.FirstName,
             LastName = registration.LastName,
         };
+
         var createdUserResult = await _userManager.CreateAsync(user, registration.Password);
 
         if (!createdUserResult.Succeeded) throw new Exception("User creation failed! Please check user details and try again.");
@@ -91,17 +107,5 @@ public class AuthenticationService : TokenBase, IAuthenticationService
         {
             await _userManager.AddToRoleAsync(user, role);
         }
-
-        var registeredUser = await _userManager.FindByNameAsync(registration.UserName);
-
-        return new RegistrationResponse
-        {
-            UserId = registeredUser.Id,
-            UserName = registeredUser.UserName,
-            FirstName = registeredUser.FirstName,
-            LastName = registeredUser.LastName,
-            Email = registeredUser.Email,
-            Role = role
-        };
     }
 }

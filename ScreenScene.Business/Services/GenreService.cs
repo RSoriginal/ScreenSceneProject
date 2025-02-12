@@ -1,6 +1,5 @@
 using AutoMapper;
 using ScreenScene.Business.DTOs;
-using ScreenScene.Business.DTOs.Grade;
 using ScreenScene.Business.Interfaces;
 using ScreenScene.Data.Entities;
 using ScreenScene.Data.Interfaces;

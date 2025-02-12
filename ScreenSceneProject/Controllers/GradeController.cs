@@ -55,15 +55,15 @@ public class GradeController : ControllerBase
     }
 
     [HttpGet("movieId/{movieId}")]
-    public async Task<double> GetAverageGradeAsync(int movieId)
+    public async Task<IActionResult> GetAverageGradeAsync(int movieId)
     {
-        return await _gradeService.GetAverageGradeAsync(movieId);
+        return Ok(await _gradeService.GetAverageGradeAsync(movieId));
     }
     
     [HttpGet("userId/{userId}")]
-    public async Task<GradeResponse?> GetUserGradeAsync(int movieId, string userId)
+    public async Task<IActionResult> GetUserGradeAsync(int movieId, string userId)
     {
-        return await _gradeService.GetUserGradeAsync(movieId, userId);
+        return Ok(await _gradeService.GetUserGradeAsync(movieId, userId));
     }
     
     [HttpPut("{id}")]

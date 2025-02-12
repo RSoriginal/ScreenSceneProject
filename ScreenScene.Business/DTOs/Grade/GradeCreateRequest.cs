@@ -10,7 +10,7 @@ public class GradeCreateRequest
     
     [Required]
     public int MovieId { get; set; }
-    
+
     [Required]
-    public string UserId { get; set; }
+    public string UserId { get; set; } = null!;
 }

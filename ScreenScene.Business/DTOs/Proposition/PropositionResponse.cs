@@ -5,6 +5,8 @@ namespace ScreenScene.Business.DTOs.Proposition;
 
 public class PropositionResponse
 {
+    public int Id { get; set; }
+
     public string Description {get; set;} = null!;
 
     public decimal Discount { get; set; }

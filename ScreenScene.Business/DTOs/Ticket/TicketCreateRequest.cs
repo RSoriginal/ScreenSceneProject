@@ -9,13 +9,16 @@ public class TicketCreateRequest
     public int RowNumber { get; set; }
     
     [Required]
-    public int SeatNumber { get; set; }
+    public int ColumnNumber { get; set; }
     
     [Required]
     [Column(TypeName = "decimal(18,2)")]
     [Range(0.01, 1000.00, ErrorMessage = "The price must be between 0.01 and 1,000.00.")]
     public decimal Price { get; set; }
-    
+
     [Required]
-    public IEnumerable<int> SeanceId { get; set; } = [];
+    public string UserId { get; set; } = null!;
+
+    [Required]
+    public int SeanceId { get; set; }
 }

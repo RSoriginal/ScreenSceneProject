@@ -26,7 +26,6 @@ namespace ScreenScene.Business.MapperConfiguration
             CreateMap<HallCreateRequest, Hall>();
             CreateMap<HallUpdateRequest, Hall>();
             CreateMap<Hall, HallResponse>();
-            //.ForMember(dest => dest.Seances, opt => opt.MapFrom(src => src.Seances.Select(s => s.Hall)));
 
             CreateMap<CommentCreateRequest, Comment>();
             CreateMap<CommentUpdateRequest, Comment>();
@@ -61,10 +60,14 @@ namespace ScreenScene.Business.MapperConfiguration
 
             CreateMap<SeanceCreateRequest, Seance>();
             CreateMap<SeanceUpdateRequest, Seance>();
-            CreateMap<Seance, SeanceResponse>();
+            CreateMap<Seance, SeanceResponse>()
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Movie!.Title))
+                .ForMember(dest => dest.HallName, opt => opt.MapFrom(src => src.Hall!.Name));
 
-            CreateMap<TicketCreateRequest, Ticket>();
-            CreateMap<TicketUpdateRequest, Ticket>();
+            CreateMap<TicketCreateRequest, Ticket>()
+                .ForMember(dest => dest.SeanceId, opt => opt.MapFrom(src => src.SeanceId));
+            CreateMap<TicketUpdateRequest, Ticket>()
+                .ForMember(dest => dest.SeanceId, opt => opt.MapFrom(src => src.SeanceId));
             CreateMap<Ticket, TicketResponse>();
         }
     }

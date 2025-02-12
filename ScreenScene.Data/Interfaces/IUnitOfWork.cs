@@ -6,9 +6,7 @@ namespace ScreenScene.Data.Interfaces
     {
         IGenericRepository<Movie> Movies { get; }
         IGenericRepository<Actor> Actors { get; }
-        //IGenericRepository<ActorMovie> ActorMovies { get; }
         IGenericRepository<Genre> Genres { get; }
-        //IGenericRepository<GenreMovie> GenreMovies { get; }
         IGenericRepository<Hall> Halls { get; }
         IGenericRepository<Comment> Comments { get; }
         IGenericRepository<Grade> Grades { get; }

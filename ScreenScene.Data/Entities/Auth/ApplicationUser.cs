@@ -12,7 +12,7 @@ public class ApplicationUser : IdentityUser
 
     public IEnumerable<Comment> Comments { get; set; } = [];
     
-    public string RefreshToken { get; set; } = null!;
+    public string? RefreshToken { get; set; }
     
     public DateTime RefreshTokenExpiryTime { get; set; }
     

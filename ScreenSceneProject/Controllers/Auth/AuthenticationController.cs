@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ScreenScene.Business.DTOs.User;
 using ScreenScene.Business.Interfaces;
@@ -35,11 +36,24 @@ public class AuthenticationController : ControllerBase
     {
         try
         {
-            return Ok(await _service.RegistrationAsync(request));
+            await _service.RegistrationAsync(request);
+
+            return StatusCode(201, new { message = "Actor created successfully" });
         }
         catch (Exception ex)
         {
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
+    }
+
+    [Authorize]
+    [HttpGet("me")]
+    public async Task<IActionResult> GetCurrentUserAsync()
+    {
+        var user = await _service.GetUserAsync(User);
+        if (user == null)
+            return NotFound(new { message = "User not found" });
+
+        return Ok(user);
     }
 }
