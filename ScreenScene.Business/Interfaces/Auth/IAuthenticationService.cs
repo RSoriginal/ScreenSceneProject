@@ -7,4 +7,5 @@ public interface IAuthenticationService
     public Task<LoginResponse> LoginAsync(LoginRequest login);
 
     public Task<RegistrationResponse> RegistrationAsync(RegistrationRequest registration);
+    //TODO getUserInfo
 }

@@ -53,6 +53,22 @@ public class CommentController : ControllerBase
 
         return comment is null ? NotFound() : Ok(comment);
     }
+
+    [HttpGet("movieId/{movieId}")]
+    public async Task<IActionResult> GetCommentsByMovieIdAsync(int movieId)
+    {
+        var comments = await _commentService.GetCommentsByMovieIdAsync(movieId);
+        
+        return comments is null ? NotFound() : Ok(comments);
+    }
+    
+    [HttpGet("userId/{userId}")]
+    public async Task<IActionResult> GetUserCommentsAsync(string userId)
+    {
+        var comments = await _commentService.GetUserCommentsAsync(userId);
+        
+        return comments is null ? NotFound() : Ok(comments);
+    }
     
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] CommentUpdateRequest commentUpdateRequest)

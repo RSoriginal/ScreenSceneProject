@@ -12,4 +12,10 @@ public class CommentUpdateRequest
 
     [Required]
     public DateTime CreatedDateTime { get; set; }
+    
+    [Required]
+    public string UserId { get; set; }
+    
+    [Required]
+    public int MovieId { get; set; }
 }

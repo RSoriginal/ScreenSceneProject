@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using ScreenScene.Business.DTOs;
 using ScreenScene.Business.DTOs.Actor;
 using ScreenScene.Business.Interfaces;
@@ -44,7 +45,7 @@ public class SeanceService : ISeanceService
     public async Task<IEnumerable<SeanceResponse>> GetByMovieAndDateAsync(int movieId, DateTime date)
     {
         var seances = new List<Seance>();
-        //var seances = await _unitOfWork.Seances.GetAllAsync();
+        
         var sortSeances = seances.Where(s => s.MovieId == movieId && s.AssignedAt.Date == date);
 
         return _mapper.Map<IEnumerable<SeanceResponse>>(sortSeances);
@@ -59,6 +60,22 @@ public class SeanceService : ISeanceService
         return _mapper.Map<SeanceResponse>(seance);
     }
 
+    public async Task<IEnumerable<SeanceResponse>> GetSeancesByMovieAsync(int movieId)
+    {
+        var seances = await _unitOfWork.Seances.QueryAsync(filter:
+            f => f.MovieId == movieId);
+        
+        return _mapper.Map<IEnumerable<SeanceResponse>>(seances);
+    }
+
+    public async Task<IEnumerable<SeanceResponse>> GetSeancesByHallAsync(int hallId)
+    {
+        var seances = await _unitOfWork.Seances.QueryAsync(filter:
+            f => f.HallId == hallId);
+        
+        return _mapper.Map<IEnumerable<SeanceResponse>>(seances);
+    }
+    
     public async Task UpdateAsync(SeanceUpdateRequest seanceUpdateRequest)
     {
         var seance = _mapper.Map<Seance>(seanceUpdateRequest);
@@ -66,5 +83,39 @@ public class SeanceService : ISeanceService
         _unitOfWork.Seances.Update(seance);
 
         await _unitOfWork.SaveChangesAsync();
+    }
+    
+    public async Task<IEnumerable<(int Row, int Seat)>> GetAvailableSeatsAsync(int seanceId)
+    {
+        var seances = await _unitOfWork.Seances.QueryAsync(
+            q => q.Include(s => s.Hall),
+            f => f.Id == seanceId);
+
+        var seance = seances.FirstOrDefault();
+        if (seance?.Hall == null)
+            throw new Exception("Сеанс или зал не найдены.");
+
+        int rowCount = seance.Hall.RowCount;
+        int columnCount = seance.Hall.ColumnCount;
+
+        var occupiedSeats = await _unitOfWork.Tickets.QueryAsync(
+            filter: f => f.SeanceId == seanceId);
+
+        var occupiedSet = new HashSet<(int, int)>(
+            occupiedSeats.Select(t => (t.RowNumber, t.SeatNumber))
+        );
+
+        var allSeats = new List<(int, int)>();
+        for (int row = 1; row <= rowCount; row++)
+        {
+            for (int seat = 1; seat <= columnCount; seat++)
+            {
+                if (!occupiedSet.Contains((row, seat)))
+                {
+                    allSeats.Add((row, seat));
+                }
+            }
+        }
+        return allSeats;
     }
 }

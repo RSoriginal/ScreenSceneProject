@@ -15,4 +15,7 @@ public class TicketCreateRequest
     [Column(TypeName = "decimal(18,2)")]
     [Range(0.01, 1000.00, ErrorMessage = "The price must be between 0.01 and 1,000.00.")]
     public decimal Price { get; set; }
+    
+    [Required]
+    public IEnumerable<int> SeanceId { get; set; } = [];
 }

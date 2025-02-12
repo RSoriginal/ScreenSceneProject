@@ -70,9 +70,32 @@ public class MovieController : ControllerBase
         return Ok(await _movieService.GetCurrentMoviesAsync());
     }
 
+    [HttpGet("by-any-genres")]
+    public async Task<IActionResult> GetByAnyGenresAsync([FromQuery] List<int> genreIds)
+    {
+        if (genreIds == null || genreIds.Count == 0)
+        {
+            return BadRequest("Genre IDs are required.");
+        }
+
+        return Ok(await _movieService.GetByAnyGenresAsync(genreIds));
+    }
+    
+    [HttpGet("by-all-genres")]
+    public async Task<IActionResult> GetByAllGenresAsync([FromQuery] List<int> genreIds)
+    {
+        if (genreIds == null || genreIds.Count == 0)
+        {
+            return BadRequest("Genre IDs are required.");
+        }
+
+        return Ok(await _movieService.GetByAllGenresAsync(genreIds));
+    }
+    
     [HttpGet("upcoming")]
     public async Task<IActionResult> GetUpcomingMoviesAsync()
     {
         return Ok(await _movieService.GetUpcomingMoviesAsync());
     }
+    
 }

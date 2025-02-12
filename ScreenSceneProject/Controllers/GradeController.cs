@@ -54,6 +54,18 @@ public class GradeController : ControllerBase
         return grade is null ? NotFound() : Ok(grade);
     }
 
+    [HttpGet("movieId/{movieId}")]
+    public async Task<double> GetAverageGradeAsync(int movieId)
+    {
+        return await _gradeService.GetAverageGradeAsync(movieId);
+    }
+    
+    [HttpGet("userId/{userId}")]
+    public async Task<GradeResponse?> GetUserGradeAsync(int movieId, string userId)
+    {
+        return await _gradeService.GetUserGradeAsync(movieId, userId);
+    }
+    
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] GradeUpdateRequest gradeUpdateRequest)
     {

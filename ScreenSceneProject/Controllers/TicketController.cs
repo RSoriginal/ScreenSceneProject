@@ -53,6 +53,14 @@ public class TicketController : ControllerBase
 
         return ticket is null ? NotFound() : Ok(ticket);
     }
+      
+    [HttpGet("user-tickets/{id}")]
+    public async Task<IActionResult> GetUserTicketsAsync(string userId)
+    {
+        var ticket = await _ticketService.GetUserTicketsAsync(userId);
+
+        return ticket is null ? NotFound() : Ok(ticket);
+    }
         
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] TicketUpdateRequest ticketUpdateRequest)

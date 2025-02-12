@@ -62,6 +62,45 @@ public class SeanceController : ControllerBase
         return seance is null ? NotFound() : Ok(seance);
     }
     
+    [HttpGet("movieId/{movieId}")]
+    public async Task<IActionResult> GetSeancesByMovieAsync(int movieId)
+    {
+        if (movieId <= 0)
+        {
+            return BadRequest("Movie ID must be greater than 0.");
+        }
+
+        var seances = await _seanceService.GetSeancesByMovieAsync(movieId);
+
+        return seances is not null && seances.Any() ? Ok(seances) : NotFound();
+    }
+    
+    [HttpGet("hallId/{hallId}")]
+    public async Task<IActionResult> GetSeancesByHallAsync(int hallId)
+    {
+        if (hallId <= 0)
+        {
+            return BadRequest("Movie ID must be greater than 0.");
+        }
+
+        var seances = await _seanceService.GetSeancesByHallAsync(hallId);
+
+        return seances is not null && seances.Any() ? Ok(seances) : NotFound();
+    }
+    
+    [HttpGet("available-seats/{seanceId}")]
+    public async Task<IActionResult> GetAvailableSeatsAsync(int seanceId)
+    {
+        if (seanceId <= 0)
+        {
+            return BadRequest("Movie ID must be greater than 0.");
+        }
+
+        var seances = await _seanceService.GetAvailableSeatsAsync(seanceId);
+
+        return seances is not null && seances.Any() ? Ok(seances) : NotFound();
+    }
+    
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] SeanceUpdateRequest seanceUpdateRequest)
     {
