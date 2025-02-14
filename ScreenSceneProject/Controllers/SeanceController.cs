@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ScreenScene.Business.DTOs;
 using ScreenScene.Business.Interfaces;
@@ -18,6 +19,7 @@ public class SeanceController : ControllerBase
     }
     
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> CreateAsync([FromBody] SeanceCreateRequest seanceCreateRequest)
     {
         await _seanceService.CreateAsync(seanceCreateRequest);
@@ -26,6 +28,7 @@ public class SeanceController : ControllerBase
     }
     
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
         try
@@ -92,6 +95,7 @@ public class SeanceController : ControllerBase
     }
     
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] SeanceUpdateRequest seanceUpdateRequest)
     {
         seanceUpdateRequest.Id = id;

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ScreenScene.Business.DTOs.Request;
 using ScreenScene.Business.Interfaces;
@@ -18,6 +19,7 @@ public class MovieController : ControllerBase
     }
     
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> CreateAsync([FromBody] MovieCreateRequest movieCreateRequest)
     {
         await _movieService.CreateAsync(movieCreateRequest);
@@ -26,6 +28,7 @@ public class MovieController : ControllerBase
     }
     
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
         try
@@ -55,6 +58,7 @@ public class MovieController : ControllerBase
     }
     
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] MovieUpdateRequest movieUpdateRequest)
     {
         movieUpdateRequest.Id = id;

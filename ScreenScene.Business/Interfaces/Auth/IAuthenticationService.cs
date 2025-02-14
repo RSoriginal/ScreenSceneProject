@@ -11,5 +11,4 @@ public interface IAuthenticationService
     public Task RegistrationAsync(RegistrationRequest registration);
 
     public Task<ApplicationUser?> GetUserAsync(ClaimsPrincipal userPrincipal);
-    //TODO getUserInfo
 }

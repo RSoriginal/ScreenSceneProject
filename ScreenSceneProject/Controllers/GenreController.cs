@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ScreenScene.Business.DTOs;
 using ScreenScene.Business.Interfaces;
@@ -18,6 +19,7 @@ public class GenreController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> CreateAsync([FromBody] GenreCreateRequest genreCreateRequest)
     {
         await _genreService.CreateAsync(genreCreateRequest);
@@ -26,6 +28,7 @@ public class GenreController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
         try
@@ -55,6 +58,7 @@ public class GenreController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] GenreUpdateRequest genreUpdateRequest)
     {
         genreUpdateRequest.Id = id;

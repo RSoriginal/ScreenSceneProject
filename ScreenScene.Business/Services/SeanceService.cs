@@ -89,10 +89,10 @@ public class SeanceService : ISeanceService
         await _unitOfWork.SaveChangesAsync();
     }
     
-    public async Task<IEnumerable<(int Row, int Seat)>> GetAvailableSeatsAsync(int seanceId)
+    public async Task<IEnumerable<Dictionary<string, int>>> GetAvailableSeatsAsync(int seanceId)
     {
         var seances = await _unitOfWork.Seances.QueryAsync(
-            q => q.Include(s => s.Hall),
+            q => q.Include(s => s.Hall).Include(s => s.Tickets),
             f => f.Id == seanceId);
 
         var seance = seances.FirstOrDefault();
@@ -109,14 +109,18 @@ public class SeanceService : ISeanceService
             occupiedSeats.Select(t => (t.RowNumber, t.ColumnNumber))
         );
 
-        var allSeats = new List<(int, int)>();
+        var allSeats = new List<Dictionary<string, int>>();
         for (int row = 1; row <= rowCount; row++)
         {
             for (int seat = 1; seat <= columnCount; seat++)
             {
                 if (!occupiedSet.Contains((row, seat)))
                 {
-                    allSeats.Add((row, seat));
+                    allSeats.Add(new Dictionary<string, int>
+                    {
+                        { "row", row },
+                        { "seat", seat }
+                    });
                 }
             }
         }

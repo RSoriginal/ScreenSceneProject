@@ -12,5 +12,5 @@ public interface ISeanceService
     Task CreateAsync(SeanceCreateRequest seanceRequest);
     Task UpdateAsync(SeanceUpdateRequest seanceRequest);
     Task DeleteAsync(int id);
-    Task<IEnumerable<(int Row, int Seat)>> GetAvailableSeatsAsync(int seanceId);
+    Task<IEnumerable<Dictionary<string, int>>> GetAvailableSeatsAsync(int seanceId);
 }

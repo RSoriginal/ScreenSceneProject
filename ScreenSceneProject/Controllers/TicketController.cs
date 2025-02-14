@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ScreenScene.Business.DTOs.Ticket;
 using ScreenScene.Business.Interfaces;
@@ -18,6 +19,7 @@ public class TicketController : ControllerBase
     }
     
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> CreateAsync([FromBody] TicketCreateRequest ticketCreateRequest)
     {
         await _ticketService.CreateAsync(ticketCreateRequest);
@@ -26,6 +28,7 @@ public class TicketController : ControllerBase
     }
     
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
         try
@@ -55,6 +58,7 @@ public class TicketController : ControllerBase
     }
       
     [HttpGet("user-tickets/{id}")]
+    [Authorize]
     public async Task<IActionResult> GetUserTicketsAsync(string id)
     {
         var ticket = await _ticketService.GetUserTicketsAsync(id);
@@ -63,6 +67,7 @@ public class TicketController : ControllerBase
     }
         
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] TicketUpdateRequest ticketUpdateRequest)
     {
         ticketUpdateRequest.Id = id;

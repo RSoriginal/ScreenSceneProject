@@ -19,6 +19,7 @@ public class ActorController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> CreateAsync([FromBody] ActorCreateRequest actorRequest)
     {
         await _actorService.CreateAsync(actorRequest);
@@ -27,6 +28,7 @@ public class ActorController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
         try
@@ -56,6 +58,7 @@ public class ActorController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] ActorUpdateRequest actorRequest)
     {
         actorRequest.Id = id;

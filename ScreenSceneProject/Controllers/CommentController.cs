@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ScreenScene.Business.DTOs.Comment;
 using ScreenScene.Business.Interfaces;
@@ -18,6 +19,7 @@ public class CommentController : ControllerBase
     }
     
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> CreateAsync([FromBody] CommentCreateRequest commentCreateRequest)
     {
         await _commentService.CreateAsync(commentCreateRequest);
@@ -26,6 +28,7 @@ public class CommentController : ControllerBase
     }
     
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
         try
@@ -63,6 +66,7 @@ public class CommentController : ControllerBase
     }
     
     [HttpGet("userId/{userId}")]
+    [Authorize]
     public async Task<IActionResult> GetUserCommentsAsync(string userId)
     {
         var comments = await _commentService.GetUserCommentsAsync(userId);
@@ -71,6 +75,7 @@ public class CommentController : ControllerBase
     }
     
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] CommentUpdateRequest commentUpdateRequest)
     {
         commentUpdateRequest.Id = id;
