@@ -45,7 +45,7 @@ namespace ScreenSceneProject.Modules
                                 Type = ReferenceType.SecurityScheme
                             }
                         },
-                        new List<string>()
+                        new List<string> { "Admin", "User" }
                     }
                 });
             });

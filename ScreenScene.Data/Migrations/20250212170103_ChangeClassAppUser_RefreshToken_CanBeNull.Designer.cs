@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ScreenScene.Data.Context;
 
@@ -11,9 +12,11 @@ using ScreenScene.Data.Context;
 namespace ScreenScene.Data.Migrations
 {
     [DbContext(typeof(ScreenSceneContext))]
-    partial class ScreenSceneContextModelSnapshot : ModelSnapshot
+    [Migration("20250212170103_ChangeClassAppUser_RefreshToken_CanBeNull")]
+    partial class ChangeClassAppUser_RefreshToken_CanBeNull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -450,6 +453,7 @@ namespace ScreenScene.Data.Migrations
                         .HasColumnType("nvarchar(1000)");
 
                     b.Property<decimal>("Discount")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("MovieId")
@@ -505,9 +509,6 @@ namespace ScreenScene.Data.Migrations
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("ColumnNumber")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -515,6 +516,9 @@ namespace ScreenScene.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("SeanceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SeatNumber")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")

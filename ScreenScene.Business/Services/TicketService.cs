@@ -49,6 +49,13 @@ public class TicketService : ITicketService
         return _mapper.Map<TicketResponse>(ticket);
     }
 
+    public async Task<IEnumerable<TicketResponse>> GetUserTicketsAsync(string userId)
+    {
+        var tickets = await _unitOfWork.Tickets.QueryAsync(filter: f => f.UserId == userId);
+        
+        return _mapper.Map<IEnumerable<TicketResponse>>(tickets);
+    }
+    
     public async Task UpdateAsync(TicketUpdateRequest ticketUpdateRequest)
     {
         var ticket = _mapper.Map<Ticket>(ticketUpdateRequest);

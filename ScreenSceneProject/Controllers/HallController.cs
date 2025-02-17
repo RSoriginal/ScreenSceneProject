@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ScreenScene.Business.DTOs;
 using ScreenScene.Business.Interfaces;
@@ -18,6 +19,7 @@ public class HallController : ControllerBase
     }
     
     [HttpPost]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> CreateAsync([FromBody] HallCreateRequest hallCreateRequest)
     {
         await _hallService.CreateAsync(hallCreateRequest);
@@ -26,6 +28,7 @@ public class HallController : ControllerBase
     }
     
     [HttpDelete("{id}")]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
         try
@@ -55,6 +58,7 @@ public class HallController : ControllerBase
     }
     
     [HttpPut("{id}")]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] HallUpdateRequest hallUpdateRequest)
     {
         hallUpdateRequest.Id = id;

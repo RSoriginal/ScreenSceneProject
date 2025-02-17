@@ -11,17 +11,27 @@ namespace ScreenScene.Business.Services.Auth;
 
 public class AuthenticationService : TokenBase, IAuthenticationService
 {
-    private readonly IMapper _mapper;
     private readonly IConfiguration _configuration;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
 
-    public AuthenticationService(IMapper mapper, IConfiguration configuration, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager) : base(configuration)
+    public AuthenticationService(IConfiguration configuration, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager) : base(configuration)
     {
-        _mapper = mapper;
         _configuration = configuration;
         _userManager = userManager;
         _roleManager = roleManager;
+    }
+
+    public async Task<ApplicationUser?> GetUserAsync(ClaimsPrincipal userPrincipal)
+    {
+        var userName = userPrincipal.Identity?.Name ?? userPrincipal.FindFirst(ClaimTypes.Name)?.Value;
+
+        if (!string.IsNullOrEmpty(userName))
+        {
+            return await _userManager.FindByNameAsync(userName);
+        }
+
+        return null;
     }
 
     public async Task<LoginResponse> LoginAsync(LoginRequest login)
@@ -62,7 +72,7 @@ public class AuthenticationService : TokenBase, IAuthenticationService
         };
     }
 
-    public async Task<RegistrationResponse> RegistrationAsync(RegistrationRequest registration)
+    public async Task RegistrationAsync(RegistrationRequest registration)
     {
         var userExists = await _userManager.FindByNameAsync(registration.UserName);
 
@@ -76,6 +86,7 @@ public class AuthenticationService : TokenBase, IAuthenticationService
             FirstName = registration.FirstName,
             LastName = registration.LastName,
         };
+
         var createdUserResult = await _userManager.CreateAsync(user, registration.Password);
 
         if (!createdUserResult.Succeeded) throw new Exception("User creation failed! Please check user details and try again.");
@@ -91,17 +102,5 @@ public class AuthenticationService : TokenBase, IAuthenticationService
         {
             await _userManager.AddToRoleAsync(user, role);
         }
-
-        var registeredUser = await _userManager.FindByNameAsync(registration.UserName);
-
-        return new RegistrationResponse
-        {
-            UserId = registeredUser.Id,
-            UserName = registeredUser.UserName,
-            FirstName = registeredUser.FirstName,
-            LastName = registeredUser.LastName,
-            Email = registeredUser.Email,
-            Role = role
-        };
     }
 }

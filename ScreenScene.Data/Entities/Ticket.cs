@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ScreenScene.Data.Entities;
@@ -11,7 +10,7 @@ public class Ticket : BaseEntity
     public int RowNumber { get; set; }
     
     [Required]
-    public int SeatNumber { get; set; }
+    public int ColumnNumber { get; set; }
     
     [Required]
     [Column(TypeName = "decimal(18,2)")]
@@ -22,5 +21,6 @@ public class Ticket : BaseEntity
 
     [Required]
     public int SeanceId { get; set; }
+
     public Seance? Seance { get; set; }
 }

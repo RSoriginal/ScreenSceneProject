@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ScreenScene.Business.DTOs;
 using ScreenScene.Business.Interfaces;
@@ -18,6 +19,7 @@ public class SeanceController : ControllerBase
     }
     
     [HttpPost]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> CreateAsync([FromBody] SeanceCreateRequest seanceCreateRequest)
     {
         await _seanceService.CreateAsync(seanceCreateRequest);
@@ -26,6 +28,7 @@ public class SeanceController : ControllerBase
     }
     
     [HttpDelete("{id}")]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
         try
@@ -62,7 +65,37 @@ public class SeanceController : ControllerBase
         return seance is null ? NotFound() : Ok(seance);
     }
     
+    [HttpGet("movieId/{movieId}")]
+    public async Task<IActionResult> GetSeancesByMovieAsync(int movieId)
+    {
+        var seances = await _seanceService.GetSeancesByMovieAsync(movieId);
+
+        return seances is not null && seances.Any() ? Ok(seances) : NotFound();
+    }
+    
+    [HttpGet("hallId/{hallId}")]
+    public async Task<IActionResult> GetSeancesByHallAsync(int hallId)
+    {
+        var seances = await _seanceService.GetSeancesByHallAsync(hallId);
+
+        return seances is not null && seances.Any() ? Ok(seances) : NotFound();
+    }
+    
+    [HttpGet("available-seats/{seanceId}")]
+    public async Task<IActionResult> GetAvailableSeatsAsync(int seanceId)
+    {
+        if (seanceId <= 0)
+        {
+            return BadRequest("Movie ID must be greater than 0.");
+        }
+
+        var seances = await _seanceService.GetAvailableSeatsAsync(seanceId);
+
+        return seances is not null && seances.Any() ? Ok(seances) : NotFound();
+    }
+    
     [HttpPut("{id}")]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] SeanceUpdateRequest seanceUpdateRequest)
     {
         seanceUpdateRequest.Id = id;

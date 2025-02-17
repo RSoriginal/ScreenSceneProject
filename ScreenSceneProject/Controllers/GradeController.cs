@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ScreenScene.Business.DTOs.Grade;
 using ScreenScene.Business.Interfaces;
@@ -18,6 +19,7 @@ public class GradeController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> CreateAsync([FromBody] GradeCreateRequest gradeCreateRequest)
     {
         await _gradeService.CreateAsync(gradeCreateRequest);
@@ -26,6 +28,7 @@ public class GradeController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
         try
@@ -54,7 +57,21 @@ public class GradeController : ControllerBase
         return grade is null ? NotFound() : Ok(grade);
     }
 
+    [HttpGet("movieId/{movieId}")]
+    public async Task<IActionResult> GetAverageGradeAsync(int movieId)
+    {
+        return Ok(await _gradeService.GetAverageGradeAsync(movieId));
+    }
+    
+    [HttpGet("userId/{userId}")]
+    [Authorize]
+    public async Task<IActionResult> GetUserGradeAsync(int movieId, string userId)
+    {
+        return Ok(await _gradeService.GetUserGradeAsync(movieId, userId));
+    }
+    
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] GradeUpdateRequest gradeUpdateRequest)
     {
         gradeUpdateRequest.Id = id;

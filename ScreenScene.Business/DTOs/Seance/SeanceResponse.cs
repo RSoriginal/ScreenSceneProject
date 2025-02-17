@@ -1,20 +1,16 @@
-using ScreenScene.Business.DTOs.Hall;
-using ScreenScene.Business.DTOs.Request;
-using ScreenScene.Business.DTOs.Ticket;
-
 namespace ScreenScene.Business.DTOs;
 
 public class SeanceResponse
 {
+    public int Id { get; set; }
+
     public DateTime AssignedAt { get; set; }
     
     public int MovieId { get; set; }
-    
-    public MovieResponse? Movie { get; set; }
+
+    public string Title { get; set; } = null!;
     
     public int HallId { get; set; }
-    
-    public HallResponse? Hall { get; set; }
 
-    public IEnumerable<TicketResponse> Tickets { get; set; } = [];
+    public string HallName { get; set; } = null!;
 }

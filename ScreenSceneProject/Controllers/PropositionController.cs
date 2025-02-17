@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ScreenScene.Business.DTOs.Proposition;
 using ScreenScene.Business.Interfaces;
@@ -18,6 +19,7 @@ public class PropositionController : ControllerBase
     }
     
     [HttpPost]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> CreateAsync([FromBody] PropositionCreateRequest propositionCreateRequest)
     {
         await _propositionService.CreateAsync(propositionCreateRequest);
@@ -26,6 +28,7 @@ public class PropositionController : ControllerBase
     }
     
     [HttpDelete("{id}")]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
         try
@@ -55,6 +58,7 @@ public class PropositionController : ControllerBase
     }
      
     [HttpPut("{id}")]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] PropositionUpdateRequest propositionUpdateRequest)
     {
         propositionUpdateRequest.Id = id;

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ScreenScene.Business.DTOs.Request;
 using ScreenScene.Business.Interfaces;
@@ -18,6 +19,7 @@ public class MovieController : ControllerBase
     }
     
     [HttpPost]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> CreateAsync([FromBody] MovieCreateRequest movieCreateRequest)
     {
         await _movieService.CreateAsync(movieCreateRequest);
@@ -26,6 +28,7 @@ public class MovieController : ControllerBase
     }
     
     [HttpDelete("{id}")]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
         try
@@ -55,6 +58,7 @@ public class MovieController : ControllerBase
     }
     
     [HttpPut("{id}")]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] MovieUpdateRequest movieUpdateRequest)
     {
         movieUpdateRequest.Id = id;
@@ -70,9 +74,32 @@ public class MovieController : ControllerBase
         return Ok(await _movieService.GetCurrentMoviesAsync());
     }
 
+    [HttpGet("by-any-genres")]
+    public async Task<IActionResult> GetByAnyGenresAsync([FromQuery] List<int> genreIds)
+    {
+        if (genreIds == null || genreIds.Count == 0)
+        {
+            return BadRequest("Genre IDs are required.");
+        }
+
+        return Ok(await _movieService.GetByAnyGenresAsync(genreIds));
+    }
+    
+    [HttpGet("by-all-genres")]
+    public async Task<IActionResult> GetByAllGenresAsync([FromQuery] List<int> genreIds)
+    {
+        if (genreIds == null || genreIds.Count == 0)
+        {
+            return BadRequest("Genre IDs are required.");
+        }
+
+        return Ok(await _movieService.GetByAllGenresAsync(genreIds));
+    }
+    
     [HttpGet("upcoming")]
     public async Task<IActionResult> GetUpcomingMoviesAsync()
     {
         return Ok(await _movieService.GetUpcomingMoviesAsync());
     }
+    
 }

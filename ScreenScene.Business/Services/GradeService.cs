@@ -48,7 +48,26 @@ public class GradeService : IGradeService
         
         return _mapper.Map<GradeResponse>(grade);
     }
+    
+    public async Task<double> GetAverageGradeAsync(int id)
+    {
+        var grades = await _unitOfWork.Grades.QueryAsync(filter: g => g.MovieId == id);
+        
+        if (!grades.Any())
+            return 0.0;
+        
+        return grades.Average(g => g.Mark);
+    }
 
+    public async Task<GradeResponse> GetUserGradeAsync(int movieId, string userId)
+    {
+        var grades = await _unitOfWork.Grades.QueryAsync(filter: g => g.MovieId == movieId && g.UserId == userId);
+        
+        var grade = grades.FirstOrDefault();
+        
+        return _mapper.Map<GradeResponse>(grade);
+    }
+    
     public Task UpdateAsync(GradeUpdateRequest gradeRequest)
     {
         var grade = _mapper.Map<Grade>(gradeRequest);

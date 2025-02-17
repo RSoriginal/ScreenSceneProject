@@ -49,6 +49,20 @@ public class CommentService : ICommentService
         return _mapper.Map<CommentResponse>(comment);
     }
 
+    public async Task<IEnumerable<CommentResponse>> GetCommentsByMovieIdAsync(int movieId)
+    {
+        var comments = await _unitOfWork.Comments.QueryAsync(filter: f => f.MovieId == movieId );
+        
+        return _mapper.Map<IEnumerable<CommentResponse>>(comments);
+    }
+
+    public async Task<IEnumerable<CommentResponse>> GetUserCommentsAsync(string userId)
+    {
+        var comments = await _unitOfWork.Comments.QueryAsync(filter: f => f.UserId == userId);
+        
+        return _mapper.Map<IEnumerable<CommentResponse>>(comments);
+    }
+    
     public async Task UpdateAsync(CommentUpdateRequest commentUpdateRequest)
     {
         var comment = _mapper.Map<Comment>(commentUpdateRequest);
