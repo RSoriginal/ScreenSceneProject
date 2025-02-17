@@ -44,7 +44,6 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize]
     public async Task<IActionResult> GetAllAsync()
     {
         return Ok(await _movieService.GetAllAsync());

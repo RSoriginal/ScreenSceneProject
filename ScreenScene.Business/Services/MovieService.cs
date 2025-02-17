@@ -20,20 +20,16 @@ public class MovieService : IMovieService
 
     public async Task<IEnumerable<MovieResponse>> GetCurrentMoviesAsync()
     {
-        var movies = new List<Movie>();
-        //var movies = await _unitOfWork.Movies.GetAllAsync();
-        var currentMovies = movies.Where(m => m.ReleaseDate <= DateTime.UtcNow);
+        var movies = await _unitOfWork.Movies.QueryAsync(filter: m => m.ReleaseDate <= DateTime.UtcNow);
 
-        return _mapper.Map<IEnumerable<MovieResponse>>(currentMovies);
+        return _mapper.Map<IEnumerable<MovieResponse>>(movies);
     }
 
     public async Task<IEnumerable<MovieResponse>> GetUpcomingMoviesAsync()
     {
-        var movies = new List<Movie>();
-        //var movies = await _unitOfWork.Movies.GetAllAsync();
-        var upcomingMovies = movies.Where(m => m.ReleaseDate > DateTime.UtcNow);
+        var movies = await _unitOfWork.Movies.QueryAsync(filter: m => m.ReleaseDate > DateTime.UtcNow);
 
-        return _mapper.Map<IEnumerable<MovieResponse>>(upcomingMovies);
+        return _mapper.Map<IEnumerable<MovieResponse>>(movies);
     }
 
     public async Task CreateAsync(MovieCreateRequest createRequest)

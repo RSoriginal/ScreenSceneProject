@@ -21,7 +21,8 @@ namespace ScreenScene.Data
                 .AddEntityFrameworkStores<ScreenSceneContext>()
                 .AddDefaultTokenProviders();
 
-            serviceCollection.AddTransient<IScreenSceneDbContext, ScreenSceneContext>();
+            serviceCollection.AddScoped<IScreenSceneDbContext>(provider =>
+                    provider.GetRequiredService<ScreenSceneContext>());
 
             serviceCollection.AddTransient<IUnitOfWork, UnitOfWork>();
         }

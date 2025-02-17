@@ -11,14 +11,12 @@ namespace ScreenScene.Business.Services.Auth;
 
 public class AuthenticationService : TokenBase, IAuthenticationService
 {
-    private readonly IMapper _mapper;
     private readonly IConfiguration _configuration;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
 
-    public AuthenticationService(IMapper mapper, IConfiguration configuration, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager) : base(configuration)
+    public AuthenticationService(IConfiguration configuration, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager) : base(configuration)
     {
-        _mapper = mapper;
         _configuration = configuration;
         _userManager = userManager;
         _roleManager = roleManager;
@@ -26,17 +24,14 @@ public class AuthenticationService : TokenBase, IAuthenticationService
 
     public async Task<ApplicationUser?> GetUserAsync(ClaimsPrincipal userPrincipal)
     {
-        var qwe = await _userManager.GetUserAsync(userPrincipal);
+        var userName = userPrincipal.Identity?.Name ?? userPrincipal.FindFirst(ClaimTypes.Name)?.Value;
 
-        var userId = _userManager.GetUserId(userPrincipal);
-        if (userId == null)
+        if (!string.IsNullOrEmpty(userName))
         {
-            return null; // У пользователя нет ID
+            return await _userManager.FindByNameAsync(userName);
         }
 
-        var user = await _userManager.FindByIdAsync(userId);
-
-        return qwe;
+        return null;
     }
 
     public async Task<LoginResponse> LoginAsync(LoginRequest login)
