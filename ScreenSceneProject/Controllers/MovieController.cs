@@ -19,7 +19,7 @@ public class MovieController : ControllerBase
     }
     
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> CreateAsync([FromBody] MovieCreateRequest movieCreateRequest)
     {
         await _movieService.CreateAsync(movieCreateRequest);
@@ -28,7 +28,7 @@ public class MovieController : ControllerBase
     }
     
     [HttpDelete("{id}")]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
         try
@@ -44,6 +44,7 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> GetAllAsync()
     {
         return Ok(await _movieService.GetAllAsync());
@@ -58,7 +59,7 @@ public class MovieController : ControllerBase
     }
     
     [HttpPut("{id}")]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] MovieUpdateRequest movieUpdateRequest)
     {
         movieUpdateRequest.Id = id;

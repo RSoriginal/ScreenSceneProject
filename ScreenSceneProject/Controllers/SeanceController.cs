@@ -19,7 +19,7 @@ public class SeanceController : ControllerBase
     }
     
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> CreateAsync([FromBody] SeanceCreateRequest seanceCreateRequest)
     {
         await _seanceService.CreateAsync(seanceCreateRequest);
@@ -28,7 +28,7 @@ public class SeanceController : ControllerBase
     }
     
     [HttpDelete("{id}")]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
         try
@@ -95,7 +95,7 @@ public class SeanceController : ControllerBase
     }
     
     [HttpPut("{id}")]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] SeanceUpdateRequest seanceUpdateRequest)
     {
         seanceUpdateRequest.Id = id;

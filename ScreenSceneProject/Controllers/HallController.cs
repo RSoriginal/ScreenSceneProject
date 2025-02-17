@@ -19,7 +19,7 @@ public class HallController : ControllerBase
     }
     
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> CreateAsync([FromBody] HallCreateRequest hallCreateRequest)
     {
         await _hallService.CreateAsync(hallCreateRequest);
@@ -28,7 +28,7 @@ public class HallController : ControllerBase
     }
     
     [HttpDelete("{id}")]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
         try
@@ -58,7 +58,7 @@ public class HallController : ControllerBase
     }
     
     [HttpPut("{id}")]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] HallUpdateRequest hallUpdateRequest)
     {
         hallUpdateRequest.Id = id;

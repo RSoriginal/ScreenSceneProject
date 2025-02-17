@@ -19,7 +19,7 @@ public class GenreController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> CreateAsync([FromBody] GenreCreateRequest genreCreateRequest)
     {
         await _genreService.CreateAsync(genreCreateRequest);
@@ -28,7 +28,7 @@ public class GenreController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
         try
@@ -58,7 +58,7 @@ public class GenreController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] GenreUpdateRequest genreUpdateRequest)
     {
         genreUpdateRequest.Id = id;

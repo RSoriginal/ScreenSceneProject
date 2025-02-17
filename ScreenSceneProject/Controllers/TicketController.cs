@@ -67,7 +67,7 @@ public class TicketController : ControllerBase
     }
         
     [HttpPut("{id}")]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] TicketUpdateRequest ticketUpdateRequest)
     {
         ticketUpdateRequest.Id = id;

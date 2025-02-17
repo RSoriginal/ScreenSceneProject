@@ -19,7 +19,7 @@ public class PropositionController : ControllerBase
     }
     
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> CreateAsync([FromBody] PropositionCreateRequest propositionCreateRequest)
     {
         await _propositionService.CreateAsync(propositionCreateRequest);
@@ -28,7 +28,7 @@ public class PropositionController : ControllerBase
     }
     
     [HttpDelete("{id}")]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
         try
@@ -58,7 +58,7 @@ public class PropositionController : ControllerBase
     }
      
     [HttpPut("{id}")]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] PropositionUpdateRequest propositionUpdateRequest)
     {
         propositionUpdateRequest.Id = id;
